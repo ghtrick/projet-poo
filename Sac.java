@@ -13,13 +13,20 @@ public class Sac {
     public void remplirSac() {
         LinkedList<Integer> l = new LinkedList<Integer>();
         for (int i = 0; i < 667; i++) {
-            l.add(i);
+            String s = String.valueOf(i);
+            boolean a = true;
+            for (int j = 0; j < s.length(); j++) {
+                if(Integer.parseInt(String.valueOf(s.charAt(j)))>6) {
+                    a = false;
+                }
+            }
+            if(a) l.add(i);
         }
-        for (int i = 666; i < 680; i++) {
+        for (int i = 345; i < 350; i++) {
             l.add(777);
         }
         System.out.println(l.size());
-        for (int i = 0; i < 170; i++) {
+        for (int i = 0; i < 87; i++) {
             int h = rand.nextInt(l.size());
             int top=l.get(h);
             l.remove(h);
@@ -38,7 +45,6 @@ public class Sac {
             for (int j: tab) {
                 int[] t;
                 String s = String.valueOf(j);
-                System.out.println(s);
                 if (j<10) {
                     t = new int[]{0, 0, Integer.parseInt(String.valueOf(s.charAt(0)))};
                 }
@@ -51,7 +57,7 @@ public class Sac {
                 numeros[cpt] = t;
                 cpt++;
             }
-            Domino dom = new Domino(numeros, 'h');
+            Domino dom = new Domino(numeros);
             this.dominosSac.add(dom);
         }
     }

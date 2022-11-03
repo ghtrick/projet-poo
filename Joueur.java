@@ -20,4 +20,6 @@ public class Joueur {
         l.remove(r);
         s.setDominosSac(l);
     }
+
+
 }
