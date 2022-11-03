@@ -4,9 +4,11 @@ import java.util.Random;
 public class Joueur {
     static Random rand = new Random();
     private LinkedList<Domino> main = new LinkedList<Domino>();
+    private int point;
 
-    public Joueur(LinkedList<Domino> main) {
+    public Joueur(LinkedList<Domino> main, int point) {
         this.main = main;
+        this.point=point;
     }
 
     public void Jouer(int i) {
@@ -19,6 +21,10 @@ public class Joueur {
         LinkedList<Domino> l = s.getDominosSac();
         l.remove(r);
         s.setDominosSac(l);
+    }
+
+    public void setMain(LinkedList<Domino> mainJ1) {
+        this.main=mainJ1;
     }
 
 

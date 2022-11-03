@@ -25,7 +25,6 @@ public class Sac {
         for (int i = 345; i < 350; i++) {
             l.add(777);
         }
-        System.out.println(l.size());
         for (int i = 0; i < 87; i++) {
             int h = rand.nextInt(l.size());
             int top=l.get(h);

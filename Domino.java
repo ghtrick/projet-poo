@@ -96,12 +96,40 @@ public class Domino {
         numeros[3] = tmp[2];
     }
 
-    public boolean test(int[] x) {
+    public boolean test(int[] x, int orientation) {
+        boolean inverse = true;
+        if(orientation==1 || orientation==0) inverse = true;
+        else inverse = false;
         for (int i = 0; i < 4; i++) {
-            if (Arrays.equals(x, numeros[i])) {
-                return true;
+            if(inverse) {
+                if(i<2) {
+                    if (Arrays.equals(x, numerosTournes(numeros[i]))) {
+                        return true;
+                    }
+                } else {
+                    if (Arrays.equals(x, numeros[i])) {
+                        return true;
+                    }
+                }
+            } else {
+                if(i>=2) {
+                    if (Arrays.equals(x, numerosTournes(numeros[i]))) {
+                        return true;
+                    }
+                } else {
+                    if (Arrays.equals(x, numeros[i])) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
     }
+
+    /* if(orientation == 0) i<2
+     * if(orientation == 1) i<2
+     * if(orientation == 2) i>=2
+     * if(orientation == 3) i>=2
+     * 
+     */
 }
