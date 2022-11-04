@@ -16,10 +16,9 @@ public class Joueur {
     }
 
     public void piocher(Sac s) {
-        int r = rand.nextInt(s.getDominosSac().size()-1);
-        main.add(s.getDominosSac().get(r));
+        main.add(s.getDominosSac().get(0));
         LinkedList<Domino> l = s.getDominosSac();
-        l.remove(r);
+        l.remove(0);
         s.setDominosSac(l);
     }
 
@@ -27,5 +26,16 @@ public class Joueur {
         this.main=mainJ1;
     }
 
+    public LinkedList<Domino> getMain() {
+        return main;
+    }
+
+    public int getPoint() {
+        return point;
+    }
+
+    public void setPoint(int point) {
+        this.point=point;
+    }
 
 }

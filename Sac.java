@@ -22,10 +22,17 @@ public class Sac {
             }
             if(a) l.add(i);
         }
-        for (int i = 345; i < 350; i++) {
-            l.add(777);
+        for (int i = 0; i < 667; i++) {
+            String s = String.valueOf(i);
+            boolean a = true;
+            for (int j = 0; j < s.length(); j++) {
+                if(Integer.parseInt(String.valueOf(s.charAt(j)))>6) {
+                    a = false;
+                }
+            }
+            if(a) l.add(i);
         }
-        for (int i = 0; i < 87; i++) {
+        for (int i = 0; i < 171; i++) {
             int h = rand.nextInt(l.size());
             int top=l.get(h);
             l.remove(h);
