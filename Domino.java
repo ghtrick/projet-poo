@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class Domino {
+public class Domino extends Tuile{
 
     /*
      *          123     1 23

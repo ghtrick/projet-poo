@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class Partie {
+public class Partie extends Jeu{
 
     private LinkedList<LinkedList<Domino>> plateau;
     private Sac s;
@@ -12,17 +12,13 @@ public class Partie {
     Scanner scan = new Scanner(System.in);
 
     public Partie() {
-        LinkedList<Domino> d = new LinkedList<>();
-        this.plateau=new LinkedList<>();
-        plateau.add(d);
+        super();
         this.s = new Sac(new LinkedList<>());
         s.remplirSac();
         plateau.get(0).add(/*s.getDominosSac().get(0)*/new Domino(new int[][]{{6,6,6},{2,2,2},{1,1,1},{3,3,3}}));
         LinkedList<Domino> s1 = s.getDominosSac();
         s1.removeFirst();
         s.setDominosSac(s1);
-        this.joueur1=new Joueur(new LinkedList<>(), 0);
-        this.joueur2=new Joueur(new LinkedList<>(), 0);
         LinkedList<Domino> mainJ1 = new LinkedList<>();
         LinkedList<Domino> mainJ2 = new LinkedList<>();
         for (int j = 0; j < 7; j++) {
@@ -133,14 +129,6 @@ public class Partie {
             }
         }
         return numeroCorrect;
-    }
-
-	public LinkedList<LinkedList<Domino>> getPlateau() {
-		return plateau;
-	}
-
-    public void setPlateau(LinkedList<LinkedList<Domino>> a) {
-        plateau=a;
     }
 
     public Joueur partie2Joueurs() {
