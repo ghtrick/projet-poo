@@ -7,18 +7,19 @@ import java.util.Scanner;
 
 public class Partie extends AbstractJeu{
 
-    private LinkedList<LinkedList<Domino>> plateau;
-    private Sac s;
-    private Joueur joueur1;
-    private Joueur joueur2;
+    private LinkedList<LinkedList<Domino>> plateau = new LinkedList<>();
+    private Sac s = new Sac(null);
+    private Joueur joueur1 = new Joueur(null, 0);
+    private Joueur joueur2 = new Joueur(null, 0);
 
     Scanner scan = new Scanner(System.in);
 
     public Partie() {
         super();
+        plateau.add(new LinkedList<>());
         this.s = new Sac(new LinkedList<>());
         s.remplirSac();
-        plateau.get(0).add(/*s.getDominosSac().get(0)*/new Domino(new int[][]{{6,6,6},{2,2,2},{1,1,1},{3,3,3}}));
+        plateau.get(0).add(new Domino(new int[][]{{6,6,6},{2,2,2},{1,1,1},{3,3,3}}));
         LinkedList<Domino> s1 = s.getDominosSac();
         s1.removeFirst();
         s.setDominosSac(s1);

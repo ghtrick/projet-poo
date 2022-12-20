@@ -2,8 +2,6 @@ package src.main.java.Carcassonne_Domino.model;
 import java.util.LinkedList;
 import java.util.Random;
 
-import src.main.java.Carcassonne_Domino.control.Sac;
-
 public class Joueur {
     static Random rand = new Random();
     private LinkedList<Domino> main = new LinkedList<Domino>();
