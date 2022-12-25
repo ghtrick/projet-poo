@@ -29,13 +29,14 @@ public class Plateau2 extends JPanel {
  
     private int zoomFactor = 2;
 
-    public Plateau2(int nbLignes, int nbColonnes) {
+    public Plateau2(int nbLignes, int nbColonnes, JFrame frame) {
         remplirLinkedList();
         setLayout(new BorderLayout());
         haut=new JPanel();
         plateau = new JPanel();
         jscroll = new JScrollPane(plateau);
-
+        jscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        jscroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jscroll.addMouseListener(new MouseInputAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -57,9 +58,9 @@ public class Plateau2 extends JPanel {
                 initialPosition = e.getPoint();     
             }
         });
+        haut.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()/5-frame.getInsets().top));
+        jscroll.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()*4/5));
 
-        haut.setPreferredSize(new Dimension((int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(), (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()/6-20));
-        jscroll.setPreferredSize(new Dimension((int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(), (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()-(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()/6-51));
         jscroll.setWheelScrollingEnabled(true);
         plateau.setLayout(new GridLayout(nbLignes, nbColonnes));
 
@@ -67,7 +68,6 @@ public class Plateau2 extends JPanel {
         this.nbLignes = nbLignes;
         this.nbColonnes = nbColonnes;
         boutons = new JButton[nbLignes][nbColonnes];
-        System.out.println(plateau.getWidth());
         for (int i = 0; i < nbLignes; i++) {
             for (int j = 0; j < nbColonnes; j++) {               
                 boutons[i][j] = new JButton();
@@ -77,6 +77,7 @@ public class Plateau2 extends JPanel {
                 int J = j;
                 int[] truc = new int[0];
                 boutons[i][j].addActionListener(e -> {
+                    if(I==0||J==0||I==boutons.length-1||J==boutons[0].length-1) return;
                     ImageIcon image = createImage(truc);
                     Image imageScaled = image.getImage().getScaledInstance(600/nbLignes*zoomFactor, 600/nbColonnes*zoomFactor, Image.SCALE_SMOOTH); 
                     ImageIcon imageIconScaled = new ImageIcon(imageScaled); 
@@ -161,9 +162,6 @@ public class Plateau2 extends JPanel {
         }
         jscroll.revalidate();
     }// Repaint the panel with the new scale factor
-    else if(zoomFactor<1) {
-
-    }
     }
 
     public ImageIcon createImage(int[] chiffres) {
@@ -209,14 +207,18 @@ public class Plateau2 extends JPanel {
          }
     }
     public static void main(String[] args) {
-        Plateau2 p = new Plateau2(10, 10);
         JFrame frame = new JFrame();
-        JScrollPane j = new JScrollPane(p);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setVisible(true);
         frame.setDefaultCloseOperation(3);
-        frame.setContentPane(p);
-        frame.setResizable(false);
-        frame.getContentPane().setBackground(Color.BLUE);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                Plateau2 p = new Plateau2(10, 10,frame);
+                JScrollPane j = new JScrollPane(p);
+                frame.setContentPane(p);
+                //frame.setResizable(false);
+                frame.getContentPane().setBackground(Color.BLUE);
+            }
+        });
+        frame.setVisible(true);
     }
 }
