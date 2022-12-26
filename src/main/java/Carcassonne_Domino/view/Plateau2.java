@@ -1,9 +1,9 @@
+package src.main.java.Carcassonne_Domino.view;
+import src.main.java.Carcassonne_Domino.model.ModelJeu;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.LinkedList;
-import java.util.concurrent.ForkJoinPool;
-import java.awt.geom.AffineTransform;
 import javax.swing.*;
+
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -14,20 +14,21 @@ import java.awt.event.MouseEvent;
 
 public class Plateau2 extends JPanel {
 
+    PartieG p;
+    ModelJeu model;
+    JFrame main;
     JPanel plateau;
     JPanel haut;
     //0 -> vide ; 1 -> domino pose ; 2 -> domino placable
     LinkedList<LinkedList<Object[]>> emplacementsDominos = new LinkedList<>();
-    GridBagConstraints c = new GridBagConstraints();
-    GridBagConstraints c1 = new GridBagConstraints();
-
     JButton[][] boutons;
     int nbLignes;
     int nbColonnes;
     JScrollPane jscroll = new JScrollPane();
     Point initialPosition;
+    JButton quitter;
  
-    private int zoomFactor = 1;
+    private int zoomFactor = 3;
 
     public Plateau2(int nbLignes, int nbColonnes, JFrame frame) {
         remplirLinkedList();
@@ -36,6 +37,13 @@ public class Plateau2 extends JPanel {
         plateau = new JPanel();
         jscroll = new JScrollPane();
         jscroll.setViewportView(plateau);
+        quitter = new JButton();
+        quitter.addActionListener(e -> {
+            p.plateau.setVisible(false);
+            p.frame.setContentPane(p.menu);
+            p.menu.setVisible(true);
+        });
+        haut.add(quitter);
         // jscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         // jscroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jscroll.addMouseListener(new MouseInputAdapter() {
@@ -61,8 +69,6 @@ public class Plateau2 extends JPanel {
         });
         haut.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()/5-frame.getInsets().top));
         jscroll.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()*4/5));
-        System.out.println(jscroll.getWidth());
-        plateau.setPreferredSize(new Dimension(jscroll.getWidth(),jscroll.getWidth()));
 
         jscroll.setWheelScrollingEnabled(true);
         plateau.setLayout(new GridLayout(nbLignes, nbColonnes));
@@ -97,14 +103,7 @@ public class Plateau2 extends JPanel {
         }
 
         boutons[boutons.length/2][boutons[0].length/2].setVisible(true);
-        //c.ipadx = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()/2;
-        // c.fill = GridBagConstraints.HORIZONTAL;
-        // c.gridy=0;
-         haut.setBackground(Color.RED);
-        // add(haut,c);
-        // c.gridy=1;
-        // jscroll.setBackground(Color.BLUE);
-        // add(jscroll,c);
+        haut.setBackground(Color.RED);
         add(haut,BorderLayout.NORTH);
         add(jscroll,BorderLayout.SOUTH);
 
@@ -149,30 +148,30 @@ public class Plateau2 extends JPanel {
     }
     
     public void zoomOut() {
-    if (zoomFactor > 1) {
-        zoomFactor--;
-        plateau.setPreferredSize(new Dimension(600 * zoomFactor, 600 * zoomFactor));
-        for(int i=0; i<boutons.length;i++) {
-            for (int j = 0; j < boutons[0].length; j++) {
-                int[] truc = new int[0];
-                ImageIcon image = createImage(truc);
-                Image imageScaled = image.getImage().getScaledInstance(600/nbLignes*zoomFactor, 600/nbColonnes*zoomFactor, Image.SCALE_SMOOTH); 
-                ImageIcon imageIconScaled = new ImageIcon(imageScaled); 
-                imageIconScaled.setImage(imageScaled);
-                boutons[i][j].setIcon(imageIconScaled);
+        if (zoomFactor > 2) {
+            zoomFactor--;
+            plateau.setPreferredSize(new Dimension(600 * zoomFactor, 600 * zoomFactor));
+            for(int i=0; i<boutons.length;i++) {
+                for (int j = 0; j < boutons[0].length; j++) {
+                    int[] truc = new int[0];
+                    ImageIcon image = createImage(truc);
+                    Image imageScaled = image.getImage().getScaledInstance(600/nbLignes*zoomFactor, 600/nbColonnes*zoomFactor, Image.SCALE_SMOOTH); 
+                    ImageIcon imageIconScaled = new ImageIcon(imageScaled); 
+                    imageIconScaled.setImage(imageScaled);
+                    boutons[i][j].setIcon(imageIconScaled);
+                }
             }
-        }
-        jscroll.revalidate();
-    }// Repaint the panel with the new scale factor
+            jscroll.revalidate();
+        }// Repaint the panel with the new scale factor
     }
 
     public ImageIcon createImage(int[] chiffres) {
         try {
             // Charger les deux images
-            BufferedImage image1 = ImageIO.read(new File("./img/0b.png"));
-            BufferedImage image2 = ImageIO.read(new File("./img/1b.png"));
-            BufferedImage image3 = ImageIO.read(new File("./img/2b.png"));
-            BufferedImage image4 = ImageIO.read(new File("./img/3b.png"));
+            BufferedImage image1 = ImageIO.read(new File("c:/Users/julie/OneDrive/Documents/projet-poo/src/main/java/Carcassonne_Domino/view/img/0b"));
+            BufferedImage image2 = ImageIO.read(new File("c:/Users/julie/OneDrive/Documents/projet-poo/src/main/java/Carcassonne_Domino/view/img/1b"));
+            BufferedImage image3 = ImageIO.read(new File("c:/Users/julie/OneDrive/Documents/projet-poo/src/main/java/Carcassonne_Domino/view/img/2b"));
+            BufferedImage image4 = ImageIO.read(new File("c:/Users/julie/OneDrive/Documents/projet-poo/src/main/java/Carcassonne_Domino/view/img/3b"));
           
             // Créer une nouvelle image avec la largeur et la hauteur des deux images
             int width = image1.getWidth()*5;
@@ -196,7 +195,7 @@ public class Plateau2 extends JPanel {
 
             ImageIcon image = new ImageIcon(combined);
             return image;
-          } catch (Exception e) {}
+          } catch (Exception e) {System.out.println(e);}
         return null;
     }
 
@@ -208,19 +207,30 @@ public class Plateau2 extends JPanel {
              }            
          }
     }
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setDefaultCloseOperation(3);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                Plateau2 p = new Plateau2(10, 10,frame);
-                JScrollPane j = new JScrollPane(p);
-                frame.setContentPane(p);
-                //frame.setResizable(false);
-                frame.getContentPane().setBackground(Color.BLUE);
-            }
-        });
-        frame.setVisible(true);
-    }
+    // public static void main(String[] args) {
+    //     JFrame frame = new JFrame();
+    //     frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    //     frame.setDefaultCloseOperation(3);
+    //     SwingUtilities.invokeLater(new Runnable() {
+    //         public void run() {
+    //             Plateau2 p = new Plateau2(20, 20,frame);
+    //             JScrollPane j = new JScrollPane(p);
+    //             frame.setContentPane(p);
+    //             //frame.setResizable(false);
+    //             frame.getContentPane().setBackground(Color.BLUE);
+    //             frame.addComponentListener(new ComponentListener() {
+    //                 public void componentResized(ComponentEvent e) {
+    //                     p.haut.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()/5-frame.getInsets().top));
+    //                     p.jscroll.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()*4/5));
+    //                 }
+                    
+    //                 // les autres méthodes de l'interface ComponentListener ne sont pas utilisées dans cet exemple
+    //                 public void componentMoved(ComponentEvent e) {}
+    //                 public void componentShown(ComponentEvent e) {}
+    //                 public void componentHidden(ComponentEvent e) {}
+    //               });
+    //         }
+    //     });
+    //     frame.setVisible(true);
+    // }
 }

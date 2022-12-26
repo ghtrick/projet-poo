@@ -7,8 +7,8 @@ public class Sac {
     Random rand = new Random();
     private LinkedList<Domino> dominosSac;
 
-    public Sac(LinkedList<Domino> dominosSac) {
-        this.dominosSac = dominosSac;
+    public Sac() {
+        this.dominosSac = new LinkedList<>();
     }
 
     public void remplirSac() {

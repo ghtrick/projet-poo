@@ -1,6 +1,8 @@
 package src.main.java.Carcassonne_Domino.model;
 import java.util.Arrays;
 
+import src.main.java.Carcassonne_Domino.AbstractClasses.AbstractTuile;
+
 public class Domino extends AbstractTuile{
 
     /*

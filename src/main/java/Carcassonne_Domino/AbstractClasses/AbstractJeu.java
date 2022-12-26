@@ -1,8 +1,11 @@
-package src.main.java.Carcassonne_Domino.model;
+package src.main.java.Carcassonne_Domino.AbstractClasses;
 import java.util.LinkedList;
 
+import src.main.java.Carcassonne_Domino.model.Domino;
+import src.main.java.Carcassonne_Domino.model.Joueur;
+
 public abstract class AbstractJeu {    
-    protected LinkedList<LinkedList<Domino>> plateau;
+    public LinkedList<LinkedList<Domino>> plateau;
     protected Joueur joueur1;
     protected Joueur joueur2;
 
@@ -10,8 +13,8 @@ public abstract class AbstractJeu {
         LinkedList<Domino> d = new LinkedList<>();
         this.plateau=new LinkedList<>();
         plateau.add(d);
-        this.joueur1=new Joueur(new LinkedList<>(), 0);
-        this.joueur2=new Joueur(new LinkedList<>(), 0);
+        this.joueur1=new Joueur(new Domino(), 0);
+        this.joueur2=new Joueur(new Domino(), 0);
     }
 
     public LinkedList<LinkedList<Domino>> getPlateau() {

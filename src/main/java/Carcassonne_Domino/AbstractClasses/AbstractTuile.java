@@ -1,4 +1,4 @@
-package src.main.java.Carcassonne_Domino.model;
+package src.main.java.Carcassonne_Domino.AbstractClasses;
 
 public abstract class AbstractTuile {
     protected int[][] numeros;

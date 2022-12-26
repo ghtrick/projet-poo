@@ -2,21 +2,21 @@ package src.main.java.Carcassonne_Domino;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import src.main.java.Carcassonne_Domino.model.Partie;
+import src.main.java.Carcassonne_Domino.view_Terminal.Partie;
+import src.main.java.Carcassonne_Domino.view.PartieG;
 
 public class Main {
     public static void main(String[] args) {
         //Sac s = new Sac(new LinkedList<>());
        // s.remplirSac();
-        int[][] x = {{1,1,1},{1,1,1},{1,1,1},{1,1,1}};
-        int[][] y = {{1,1,1},{1,1,1},{1,1,1},{1,1,1}};
+        // int[][] x = {{1,1,1},{1,1,1},{1,1,1},{1,1,1}};
+        // int[][] y = {{1,1,1},{1,1,1},{1,1,1},{1,1,1}};
         /*System.out.println(d.affiche());
         System.out.println(d1.affiche());*/
         //
         //System.out.println(d.test(d1.getNumeros()[0],0));
         //Domino d = new Domino(x);
         //Domino d1 = new Domino(y);
-        Partie p = new Partie();
         //LinkedList<LinkedList<Domino>> a = p.getPlateau();
         //a.get(0).set(0, d);
         //p.setPlateau(a);
@@ -37,8 +37,10 @@ public class Main {
          *   4   6  1   1  4   6
          *    321    654    123
          */
-       p.partie2Joueurs();
+        // Partie p = new Partie();
+        // p.partieFini(p.partie2Joueurs());
 
+        PartieG p = new PartieG();
     }
 
 

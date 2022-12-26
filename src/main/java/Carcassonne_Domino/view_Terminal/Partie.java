@@ -1,42 +1,29 @@
-package src.main.java.Carcassonne_Domino.model;
+package src.main.java.Carcassonne_Domino.view_Terminal;
 
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import src.main.java.Carcassonne_Domino.AbstractClasses.AbstractJeu;
+import src.main.java.Carcassonne_Domino.model.Domino;
+import src.main.java.Carcassonne_Domino.model.Joueur;
+import src.main.java.Carcassonne_Domino.model.ModelJeu;
+
 public class Partie extends AbstractJeu{
 
-    private LinkedList<LinkedList<Domino>> plateau = new LinkedList<>();
-    private Sac s = new Sac(null);
-    private Joueur joueur1 = new Joueur(null, 0);
-    private Joueur joueur2 = new Joueur(null, 0);
+    public LinkedList<LinkedList<Domino>> plateau = new LinkedList<>();
+    public ModelJeu model;
 
     Scanner scan = new Scanner(System.in);
 
     public Partie() {
         super();
         plateau.add(new LinkedList<>());
-        this.s = new Sac(new LinkedList<>());
-        s.remplirSac();
-        plateau.get(0).add(new Domino(new int[][]{{6,6,6},{2,2,2},{1,1,1},{3,3,3}}));
-        LinkedList<Domino> s1 = s.getDominosSac();
-        s1.removeFirst();
-        s.setDominosSac(s1);
-        LinkedList<Domino> mainJ1 = new LinkedList<>();
-        LinkedList<Domino> mainJ2 = new LinkedList<>();
-        for (int j = 0; j < 7; j++) {
-            mainJ1.add(s.getDominosSac().get(0));
-            LinkedList<Domino> s2 = s.getDominosSac();
-            s1.removeFirst();
-            s.setDominosSac(s2);
-            mainJ2.add(s.getDominosSac().get(0));
-            LinkedList<Domino> s3 = s.getDominosSac();
-            s1.removeFirst();
-            s.setDominosSac(s3);
-        }
-        this.joueur1.setMain(mainJ1);
-        this.joueur2.setMain(mainJ2);
+        model = new ModelJeu();
+        model.p = this;
+        plateau.get(0).add(model.s.getDominosSac().getFirst());
+        model.s.getDominosSac().removeFirst();
     }
 
     public static String afficheDominoListe(LinkedList<Domino> l) {
@@ -99,7 +86,10 @@ public class Partie extends AbstractJeu{
                 numeroCorrect = false;
             }
         }
-     //   if (bool.isEmpty()) numeroCorrect = false;
+        if (bool.isEmpty()) {
+            System.out.println("corentin t'es null");
+            numeroCorrect = false;
+        }
         if(numeroCorrect) {
             if(x==-1 || x==plateau.get(0).size()) {
                 if(x==-1) x=0;
@@ -137,14 +127,16 @@ public class Partie extends AbstractJeu{
 
     public Joueur partie2Joueurs() {
         boolean finirPartie = false;
-        Joueur joueurCourant = this.joueur1;
+        Joueur joueurCourant = model.joueur1;
         do {
             System.out.println(this.affichePlateau());
             System.out.println("---------------------------------------------------------------");
-            joueurCourant.piocher(s);
-            System.out.println(afficheDominoListe(joueurCourant.getMain()));
-            System.out.println((joueurCourant.equals(joueur1)) ? "Tour du joueur1" : "Tour du joueur2");
-            System.out.println((joueurCourant.equals(joueur1)) ? "Joueur1 : " + joueur1.getPoint() : "Joueur2 : " + joueur2.getPoint());
+            joueurCourant.piocher(model.s);
+            LinkedList<Domino> maintmp = new LinkedList<>();
+            maintmp.add(joueurCourant.getMain());
+            System.out.println(afficheDominoListe(maintmp));
+            System.out.println((joueurCourant.equals(model.joueur1)) ? "Tour du joueur1" : "Tour du joueur2");
+            System.out.println((joueurCourant.equals(model.joueur1)) ? "Joueur1 : " + model.joueur1.getPoint() : "Joueur2 : " + model.joueur2.getPoint());
             int res0 = -1;
             
             do {
@@ -162,14 +154,9 @@ public class Partie extends AbstractJeu{
                 int res4 = -2;
                 boolean aJoue = false;
                 boolean dominoPlace = false;
-                int res = -1;
-                
-                do {
-                    System.out.println("Quel domino voulez vous selectionner");
-                    String dominoAJouer = scan.nextLine();
                     
+                do {
                     try {
-                        res = Integer.parseInt(dominoAJouer);
                         System.out.println("Taper votre action : (0 pour tourner le domino, 1 pour taper les coordonnées où vous voulez placer le domino, 2 pour passer son tour)");
                         int res2 = -1;
                         String actionAEffectuer = "";
@@ -184,10 +171,11 @@ public class Partie extends AbstractJeu{
                         } while (res2 <= -1 || res2 >= 3);
                         
                         if (res2 == 0) {
-                            LinkedList<Domino> mainTemp = joueurCourant.getMain();
-                            mainTemp.get(res).tourneUneFois();
-                            joueurCourant.setMain(mainTemp);
-                            System.out.println(afficheDominoListe(joueurCourant.getMain()));
+                            LinkedList<Domino> mainTemp = new LinkedList<>();
+                            mainTemp.add(joueurCourant.getMain());
+                            mainTemp.get(0).tourneUneFois();
+                            joueurCourant.setMain(mainTemp.get(0));
+                            System.out.println(afficheDominoListe(mainTemp));
                         } 
                         
                         else if(res2 == 1) {
@@ -203,83 +191,48 @@ public class Partie extends AbstractJeu{
                                     res4 = Integer.parseInt(y);
                                 } catch (Exception e) {}
                                 try {
-                                    dominoPlace = ajoutDomino(joueurCourant.getMain().get(res), res3, res4);
-                                    System.out.println(dominoPlace);
+                                    dominoPlace = ajoutDomino(joueurCourant.getMain(), res3, res4);
+                                    
                                     aJoue = dominoPlace;
                                 } catch (Exception e) {}
                             } while (res3<=-2 || res4 <=-2);
                         }
                         else if(res2 == 2) {
                             System.out.println("Vous avez passé votre tour");
+                            joueurCourant.setMain(null);
                             aJoue=true;
                         }
                     } catch (Exception e) {System.out.println("erreur domino mal sélectionné");}
-
-                } while (((res <= -1 || res >= joueurCourant.getMain().size()) || !aJoue));
+                    System.out.println(aJoue + " aa");
+                } while (!aJoue);
                 
                 if (dominoPlace) { 
                     if(res3==-1) res3 = 0;
                     if(res4==-1) res4 = 0;
-                    if(joueurCourant.equals(joueur1)) joueur1.setPoint(point(res3,res4)+joueur1.getPoint());
-                    else joueur2.setPoint(point(res3,res4)+joueur2.getPoint());
-                    LinkedList<Domino> liste = joueurCourant.getMain();
-                    liste.remove(res);
-                    joueurCourant.setMain(liste);
+                    if(joueurCourant.equals(model.joueur1)) model.joueur1.setPoint(model.point(res3,res4)+model.joueur1.getPoint());
+                    else model.joueur2.setPoint(model.point(res3,res4)+model.joueur2.getPoint());
+                    joueurCourant.setMain(null);
                 }
-                joueurCourant = (joueurCourant.equals(joueur1)) ? joueur2 : joueur1;
+                joueurCourant = (joueurCourant.equals(model.joueur1)) ? model.joueur2 : model.joueur1;
             }
      
             else if (res0 == 2) {
-                if(joueur1.getPoint()==joueur2.getPoint()) return null;
-                return (joueur1.getPoint()>joueur2.getPoint()) ? joueur1 : joueur2;
+                if(model.joueur1.getPoint()==model.joueur2.getPoint()) return null;
+                return (model.joueur1.getPoint()>model.joueur2.getPoint()) ? model.joueur1 : model.joueur2;
             } 
            
             else if (res0 == 1) {
-                joueurCourant = (joueurCourant.equals(joueur1)) ? joueur2 : joueur1;
+                joueurCourant = (joueurCourant.equals(model.joueur1)) ? model.joueur2 : model.joueur1;
             }
             
-        } while (!this.s.getDominosSac().isEmpty() || finirPartie);
+        } while (!this.model.s.getDominosSac().isEmpty() || finirPartie);
         
-        if(joueur1.getPoint()==joueur2.getPoint()) return null;
-        return (joueur1.getPoint()>joueur2.getPoint()) ? joueur1 : joueur2;
+        if(model.joueur1.getPoint()==model.joueur2.getPoint()) return null;
+        return (model.joueur1.getPoint()>model.joueur2.getPoint()) ? model.joueur1 : model.joueur2;
     }
 
-    public void partieFini() {
-        System.out.println("Joueur1 : " + joueur1.getPoint());
-        System.out.println("Joueur2 : " + joueur1.getPoint());
-        System.out.println((joueur1.getPoint()>joueur2.getPoint()) ? "Joueur1 a gagné" : "Joueur2 a gagné");
+    public void partieFini(Joueur gagnant) {
+        System.out.println((model.joueur1.equals(gagnant)) ? "Joueur1 a gagné" : "Joueur2 a gagné");
     }
 
-    public int point(int x, int y) {
-        int res = 0;
-        try {
-            if(Arrays.equals(plateau.get(y).get(x).getNumeros()[3], plateau.get(y).get(x-1).getNumeros()[1])) {
-                for(int i=0; i<plateau.get(y).get(x).getNumeros()[3].length; i++) {
-                    res+= plateau.get(y).get(x).getNumeros()[3][i];
-                }
-            }
-        } catch (Exception e) {}
-        try {
-            if(Arrays.equals(plateau.get(y).get(x).getNumeros()[0], plateau.get(y+1).get(x).getNumeros()[2])) {
-                for(int i=0; i<plateau.get(y).get(x).getNumeros()[3].length; i++) {
-                    res+= plateau.get(y).get(x).getNumeros()[3][i];
-                }
-            }
-        } catch (Exception e) {}
-        try {
-            if(Arrays.equals(plateau.get(y).get(x).getNumeros()[1], plateau.get(y).get(x+1).getNumeros()[3])) {
-                for(int i=0; i<plateau.get(y).get(x).getNumeros()[3].length; i++) {
-                    res+= plateau.get(y).get(x).getNumeros()[3][i];
-                }
-            }
-        } catch (Exception e) {}
-        try {
-            if(Arrays.equals(plateau.get(y-1).get(x).getNumeros()[2], plateau.get(y-1).get(x).getNumeros()[0])) {
-                for(int i=0; i<plateau.get(y).get(x).getNumeros()[3].length; i++) {
-                    res+= plateau.get(y).get(x).getNumeros()[3][i];
-                }
-           }
-        } catch (Exception e) {}
-        return res;
-    }
- }
+}
