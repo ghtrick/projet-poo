@@ -27,16 +27,17 @@ public class Plateau2 extends JPanel {
     JScrollPane jscroll = new JScrollPane();
     Point initialPosition;
  
-    private int zoomFactor = 2;
+    private int zoomFactor = 1;
 
     public Plateau2(int nbLignes, int nbColonnes, JFrame frame) {
         remplirLinkedList();
         setLayout(new BorderLayout());
         haut=new JPanel();
         plateau = new JPanel();
-        jscroll = new JScrollPane(plateau);
-        jscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        jscroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jscroll = new JScrollPane();
+        jscroll.setViewportView(plateau);
+        // jscroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        // jscroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jscroll.addMouseListener(new MouseInputAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -60,11 +61,12 @@ public class Plateau2 extends JPanel {
         });
         haut.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()/5-frame.getInsets().top));
         jscroll.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight()*4/5));
+        System.out.println(jscroll.getWidth());
+        plateau.setPreferredSize(new Dimension(jscroll.getWidth(),jscroll.getWidth()));
 
         jscroll.setWheelScrollingEnabled(true);
         plateau.setLayout(new GridLayout(nbLignes, nbColonnes));
 
-        // plateau.setPreferredSize(new Dimension((int)Toolkit.getDefaultToolkit().getScreenSize().getWidth(), (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()-(int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()/6));
         this.nbLignes = nbLignes;
         this.nbColonnes = nbColonnes;
         boutons = new JButton[nbLignes][nbColonnes];
@@ -147,7 +149,7 @@ public class Plateau2 extends JPanel {
     }
     
     public void zoomOut() {
-    if (zoomFactor > 2) {
+    if (zoomFactor > 1) {
         zoomFactor--;
         plateau.setPreferredSize(new Dimension(600 * zoomFactor, 600 * zoomFactor));
         for(int i=0; i<boutons.length;i++) {
