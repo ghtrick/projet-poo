@@ -5,10 +5,12 @@ public class Joueur {
     static Random rand = new Random();
     protected int point;
     protected Domino main;
+    protected int numeroDeJoueur;
 
-    public Joueur(Domino main, int point) {
+    public Joueur(Domino main, int point, int numeroDeJoueur) {
         this.main = main;
         this.point=point;
+        this.numeroDeJoueur=numeroDeJoueur;
     }
 
     public void piocher(Sac s) {

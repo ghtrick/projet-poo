@@ -20,7 +20,7 @@ public class Plateau2 extends JPanel {
     LinkedList<JLabel> nombrePoints = new LinkedList<>();
     //0 -> vide ; 1 -> domino pose ; 2 -> domino placable
     LinkedList<LinkedList<Domino>> emplacementsDominos = new LinkedList<>();
-    private JButton[][] boutons;
+    JButton[][] boutons;
     int nbLignes;
     int nbColonnes;
     JScrollPane jscroll = new JScrollPane();
@@ -94,19 +94,6 @@ public class Plateau2 extends JPanel {
                         p.skip();
                       
                     }
-                    System.out.println();
-                    System.out.println(Arrays.toString(p.dominoCourantChiffre[0]));
-                    System.out.println(Arrays.toString(p.dominoCourantChiffre[1]));
-                    System.out.println(Arrays.toString(p.dominoCourantChiffre[2]));
-                    System.out.println(Arrays.toString(p.dominoCourantChiffre[3]));
-                    String res = "";
-                    System.out.println(emplacementsDominos.size());
-                    for (int l = 0; l < emplacementsDominos.size(); l++) {
-                        res+=Partie.afficheDominoListe(emplacementsDominos.get(l));
-                    }
-                    System.out.println(res);
-                    
-
                 });
 
                 plateau.add(boutons[i][j]);
@@ -144,11 +131,6 @@ public class Plateau2 extends JPanel {
         }
         Domino d = model.s.getDominosSac().getFirst();
         emplacementsDominos.get(boutons.length/2).add(boutons[0].length/2, d);
-        System.out.println();
-        System.out.println(Arrays.toString(d.getNumeros()[0]));
-        System.out.println(Arrays.toString(d.getNumeros()[1]));
-        System.out.println(Arrays.toString(d.getNumeros()[2]));
-        System.out.println(Arrays.toString(d.getNumeros()[3]));
         model.s.getDominosSac().removeFirst();
         ImageIcon image = createImage(d.getNumeros());
         Image imageScaled = image.getImage().getScaledInstance(600/nbLignes*zoomFactor, 600/nbColonnes*zoomFactor, Image.SCALE_SMOOTH); 

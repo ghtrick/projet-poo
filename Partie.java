@@ -79,7 +79,6 @@ public class Partie extends AbstractJeu{
             }
         }
         if (bool.isEmpty()) {
-            System.out.println("corentin t'es null");
             numeroCorrect = false;
         }
         if(numeroCorrect) {
@@ -117,115 +116,149 @@ public class Partie extends AbstractJeu{
         return numeroCorrect;
     }
 
+    public void choisirJoueurs() {
+        System.out.println("combien de joueurs ?");
+        int res = 0;
+        do {
+            try {
+                String action = scan.nextLine();
+                res = Integer.parseInt(action);
+            } catch (Exception e) {}
+        } while (res<=0);
+        int tmp = 0;
+        boolean[] tab = new boolean[res];
+        do {
+            System.out.println("Joueur " + (tmp+1) + " est-t-il il bot ? (oui ou non)");
+            String joueurBot = scan.nextLine();
+            if(joueurBot.equals("oui")) {
+                tab[tmp] = true;
+                tmp++;
+            } else if(joueurBot.equals("non")) {
+                tab[tmp] = false;
+                tmp++;
+            } else {
+                System.out.println("Mauvaise réponse répondez par oui ou par non");
+            }
+        } while(tmp<res);
+        model.initJoueurs(res, tab, true);
+    }
+
     public int partie2Joueurs() {
+        choisirJoueurs();
         boolean finirPartie = false;
-        Joueur joueurCourant = model.joueur1;
+        int joueurCourant = 0;
         do {
             System.out.println(this.affichePlateau());
             System.out.println("---------------------------------------------------------------");
-            joueurCourant.piocher(model.s);
+            model.joueurs.get(joueurCourant).piocher(model.s);
             LinkedList<Domino> maintmp = new LinkedList<>();
-            maintmp.add(joueurCourant.getMain());
+            maintmp.add(model.joueurs.get(joueurCourant).getMain());
             System.out.println(afficheDominoListe(maintmp));
-            System.out.println((joueurCourant.equals(model.joueur1)) ? "Tour du joueur1" : "Tour du joueur2");
-            System.out.println((joueurCourant.equals(model.joueur1)) ? "Joueur1 : " + model.joueur1.getPoint() : "Joueur2 : " + model.joueur2.getPoint());
+            System.out.println("Tour du joueur "+model.joueurs.get(joueurCourant).numeroDeJoueur);
+            System.out.println("Joueur " + model.joueurs.get(joueurCourant).numeroDeJoueur + " : " + model.joueurs.get(joueurCourant).getPoint());
             int res0 = -1;
-            
-            do {
-                System.out.println("Taper votre action : (0 pour jouer, 1 pour passer son tour, 2 pour abandonner)");
-                String action = scan.nextLine();
-                
-                try {
-                    res0 = Integer.parseInt(action);
-                } catch (Exception e) {System.out.println("Mauvais numéro");}
-                
-            } while(res0 <= -1 || res0>2);
-                     
-            if (res0 == 0) {
-                int res3 = -2;
-                int res4 = -2;
-                boolean aJoue = false;
-                boolean dominoPlace = false;
-                    
+            if (model.joueurs.get(joueurCourant) instanceof Bot) {
+                ((Bot)model.joueurs.get(joueurCourant)).jouerText(joueurCourant);
+                if (joueurCourant+1==model.joueurs.size()) joueurCourant=0;
+                else joueurCourant++;
+            } else {
                 do {
+                    System.out.println("Taper votre action : (0 pour jouer, 1 pour passer son tour, 2 pour abandonner)");
+                    String action = scan.nextLine();
+                    
                     try {
-                        System.out.println("Taper votre action : (0 pour tourner le domino, 1 pour taper les coordonnées où vous voulez placer le domino, 2 pour passer son tour)");
-                        int res2 = -1;
-                        String actionAEffectuer = "";
+                        res0 = Integer.parseInt(action);
+                    } catch (Exception e) {System.out.println("Mauvais numéro");}
+                    
+                } while(res0 <= -1 || res0>2);
                         
-                        do {
-                            actionAEffectuer = scan.nextLine();
+                if (res0 == 0) {
+                    int res3 = -2;
+                    int res4 = -2;
+                    boolean aJoue = false;
+                    boolean dominoPlace = false;
+                        
+                    do {
+                        try {
+                            System.out.println("Taper votre action : (0 pour tourner le domino, 1 pour taper les coordonnées où vous voulez placer le domino, 2 pour passer son tour)");
+                            int res2 = -1;
+                            String actionAEffectuer = "";
                             
-                            try {
-                                res2 = Integer.parseInt(actionAEffectuer);
-                            } catch (Exception e) {System.out.println("erreur action mal sélectionnée");}
-                            
-                        } while (res2 <= -1 || res2 >= 3);
-                        
-                        if (res2 == 0) {
-                            LinkedList<Domino> mainTemp = new LinkedList<>();
-                            mainTemp.add(joueurCourant.getMain());
-                            mainTemp.get(0).tourneUneFois();
-                            joueurCourant.setMain(mainTemp.get(0));
-                            System.out.println(afficheDominoListe(mainTemp));
-                        } 
-                        
-                        else if(res2 == 1) {
-                            String x = "";
-                            String y = "";
                             do {
-                                System.out.println("x?");
-                                x = scan.nextLine();
-                                System.out.println("y?");
-                                y = scan.nextLine();
+                                actionAEffectuer = scan.nextLine();
+                                
                                 try {
-                                    res3 = Integer.parseInt(x);
-                                    res4 = Integer.parseInt(y);
-                                } catch (Exception e) {}
-                                try {
-                                    dominoPlace = ajoutDomino(joueurCourant.getMain(), res3, res4);
-                                    
-                                    aJoue = dominoPlace;
-                                } catch (Exception e) {}
-                            } while (res3<=-2 || res4 <=-2);
-                        }
-                        else if(res2 == 2) {
-                            System.out.println("Vous avez passé votre tour");
-                            joueurCourant.setMain(null);
-                            aJoue=true;
-                        }
-                    } catch (Exception e) {System.out.println("erreur domino mal sélectionné");}
-                    System.out.println(aJoue + " aa");
-                } while (!aJoue);
+                                    res2 = Integer.parseInt(actionAEffectuer);
+                                } catch (Exception e) {System.out.println("erreur action mal sélectionnée");}
+                                
+                            } while (res2 <= -1 || res2 >= 3);
+                            
+                            if (res2 == 0) {
+                                LinkedList<Domino> mainTemp = new LinkedList<>();
+                                mainTemp.add(model.joueurs.get(joueurCourant).getMain());
+                                mainTemp.get(0).tourneUneFois();
+                                model.joueurs.get(joueurCourant).setMain(mainTemp.get(0));
+                                System.out.println(afficheDominoListe(mainTemp));
+                            } 
+                            
+                            else if(res2 == 1) {
+                                String x = "";
+                                String y = "";
+                                do {
+                                    System.out.println("x?");
+                                    x = scan.nextLine();
+                                    System.out.println("y?");
+                                    y = scan.nextLine();
+                                    try {
+                                        res3 = Integer.parseInt(x);
+                                        res4 = Integer.parseInt(y);
+                                    } catch (Exception e) {}
+                                    try {
+                                        dominoPlace = ajoutDomino(model.joueurs.get(joueurCourant).getMain(), res3, res4);
+                                        
+                                        aJoue = dominoPlace;
+                                    } catch (Exception e) {}
+                                } while (res3<=-2 || res4 <=-2);
+                            }
+                            else if(res2 == 2) {
+                                System.out.println("Vous avez passé votre tour");
+                                model.joueurs.get(joueurCourant).setMain(null);
+                                aJoue=true;
+                            }
+                        } catch (Exception e) {System.out.println("erreur domino mal sélectionné");}
+                        System.out.println(aJoue + " aa");
+                    } while (!aJoue);
+                    
+                    if (dominoPlace) { 
+                        if(res3==-1) res3 = 0;
+                        if(res4==-1) res4 = 0;
+                        model.joueurs.get(joueurCourant).setPoint(model.point(res3,res4)+model.joueurs.get(joueurCourant).getPoint());
+                        model.joueurs.get(joueurCourant).setMain(null);
+                    }
+                    if (joueurCourant+1==model.joueurs.size()) joueurCourant=0;
+                    else joueurCourant++;
+                } else if (res0 == 2) {
+                    if(model.joueurs.size()==2) {
+                        model.joueurs.remove(joueurCourant);
+                        return model.max();
+                    }
+                    model.joueurs.remove(joueurCourant);
+                    joueurCourant = joueurCourant+1%model.joueurs.size();
+                } 
                 
-                if (dominoPlace) { 
-                    if(res3==-1) res3 = 0;
-                    if(res4==-1) res4 = 0;
-                    if(joueurCourant.equals(model.joueur1)) model.joueur1.setPoint(model.point(res3,res4)+model.joueur1.getPoint());
-                    else model.joueur2.setPoint(model.point(res3,res4)+model.joueur2.getPoint());
-                    joueurCourant.setMain(null);
+                else if (res0 == 1) {
+                    joueurCourant = joueurCourant+1%model.joueurs.size();
                 }
-                joueurCourant = (joueurCourant.equals(model.joueur1)) ? model.joueur2 : model.joueur1;
-            }
-     
-            else if (res0 == 2) {
-                if(model.joueur1.getPoint()==model.joueur2.getPoint()) return 0;
-                return (model.joueur1.getPoint()>model.joueur2.getPoint()) ? 1 : 2;
-            } 
-           
-            else if (res0 == 1) {
-                joueurCourant = (joueurCourant.equals(model.joueur1)) ? model.joueur2 : model.joueur1;
-            }
             
+            }
         } while (!this.model.s.getDominosSac().isEmpty() || finirPartie);
         
-        if(model.joueur1.getPoint()==model.joueur2.getPoint()) return 0;
-        return (model.joueur1.getPoint()>model.joueur2.getPoint()) ? 1 : 2;
+        return model.max();
     }
 
     public void partieFini(int gagnant) {
-        if (gagnant!=0) {
-            System.out.println((gagnant==1) ? "Joueur1 a gagné" : "Joueur2 a gagné");
+        if (gagnant!=-1) {
+            System.out.println("Joueur " + gagnant + " a gagné");
         } else {
             System.out.println("égalité");
         }

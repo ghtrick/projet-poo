@@ -8,8 +8,12 @@ public class MenuG extends JPanel{
     JButton option;
     JLabel text;
     PartieG p;
+    JFrame frame;
+    int nbJoueurs=3;
+    int nbBot=2;
 
     public MenuG(JFrame frame) {
+        this.frame=frame;
         setLayout(null);
         jouerDomino = new JButton("Jouer domino");
         jouerDomino.setBounds(frame.getWidth()/2-65, frame.getHeight()/2-25, 130, 50);
@@ -18,7 +22,7 @@ public class MenuG extends JPanel{
         option = new JButton("Option");
         option.setBounds(frame.getWidth()/2-50, frame.getHeight()/2-25+120, 100, 50);
         quitter = new JButton("Quitter");
-        quitter.setBounds(frame.getWidth()/2-50, frame.getHeight()/2-25+180, 100, 50);
+        quitter.setBounds(frame.getWidth()/2-50, frame.getHeight()/2-25+180, 100, 50); 
         add(jouerDomino);
         add(jouerCarcassonne);
         add(quitter);
@@ -26,6 +30,56 @@ public class MenuG extends JPanel{
 
         quitter.addActionListener(e -> {
             System.exit(0);
+        });
+
+        option.addActionListener(e->{
+            JPanel menuOption = new JPanel();
+            menuOption.setLayout(null);
+            JLabel nbJoueursLabel = new JLabel("Nombres de joueurs : "+nbJoueurs);
+            nbJoueursLabel.setFont(new Font("Arial",0,50));
+            nbJoueursLabel.setBounds(frame.getWidth()/2-600, frame.getHeight()/2-50,600,100);
+            JLabel nbBotsLabel = new JLabel("Nombres de bot : "+nbBot);
+            nbBotsLabel.setBounds(frame.getWidth()/2-600, frame.getHeight()/2+100, 600,100);
+            nbBotsLabel.setFont(new Font("Arial",0,50));
+            JButton plusJoueurs = new JButton(new ImageIcon("./img/plus.png"));
+            plusJoueurs.setBounds(frame.getWidth()/2+50, frame.getHeight()/2-50,100,100);
+            plusJoueurs.addActionListener(a -> {
+                if(nbJoueurs<5)nbJoueurs++;
+                nbJoueursLabel.setText("Nombres de joueurs : "+nbJoueurs);
+            });
+            JButton plusBots = new JButton(new ImageIcon("./img/plus.png"));
+            plusBots.setBounds(frame.getWidth()/2+50, frame.getHeight()/2+100, 100,100);
+            plusBots.addActionListener(a-> {
+                if(nbBot<nbJoueurs) nbBot++;
+                nbBotsLabel.setText("Nombres de bot : "+nbBot);
+            });
+            JButton moinsJoueurs = new JButton(new ImageIcon("./img/moins.png"));
+            moinsJoueurs.setBounds(frame.getWidth()/2+155, frame.getHeight()/2-50,100,100);
+            moinsJoueurs.addActionListener(a-> {
+                if(nbJoueurs>2) nbJoueurs--;
+                if(nbBot==nbJoueurs+1) nbBot--;
+                nbBotsLabel.setText("Nombres de bot : "+nbBot);
+                nbJoueursLabel.setText("Nombres de joueurs : "+nbJoueurs);
+            });
+            JButton moinsBots = new JButton(new ImageIcon("./img/moins.png"));
+            moinsBots.addActionListener(a-> {
+                if(nbBot>0) nbBot--;
+                nbBotsLabel.setText("Nombres de bot : "+nbBot);
+            });
+            moinsBots.setBounds(frame.getWidth()/2+155, frame.getHeight()/2+100, 100,100);
+            frame.setContentPane(menuOption);
+            JButton quitter2 = new JButton("quitter");
+            quitter2.setBounds(frame.getWidth()/2-50, frame.getHeight()/2+300, 150, 50);
+            quitter2.addActionListener(a -> {
+               // frame.setContentPane(this);
+            });
+            menuOption.add(nbJoueursLabel);
+            menuOption.add(nbBotsLabel);
+            menuOption.add(plusBots);
+            menuOption.add(moinsBots);
+            menuOption.add(moinsJoueurs);
+            menuOption.add(plusJoueurs);
+            menuOption.add(quitter2);
         });
     }
 }
