@@ -19,7 +19,7 @@ public class Domino extends AbstractTuile{
         for (int i = 0; i < 4; i++) {
             if(inverse) {
                 if(i<2) {
-                    if (Arrays.equals(x, numerosTournes(numeros[i]))) {
+                    if (Arrays.equals(x, Util.numerosTournes(numeros[i]))) {
                         return true;
                     }
                 } else {
@@ -29,7 +29,7 @@ public class Domino extends AbstractTuile{
                 }
             } else {
                 if(i>=2) {
-                    if (Arrays.equals(x, numerosTournes(numeros[i]))) {
+                    if (Arrays.equals(x, Util.numerosTournes(numeros[i]))) {
                         return true;
                     }
                 } else {
@@ -40,5 +40,13 @@ public class Domino extends AbstractTuile{
             }
         }
         return false;
+    }
+
+    public boolean isEstVide() {
+        return false;
+    }
+
+    public String[][] getNumeros() {
+        return null;
     }
 }

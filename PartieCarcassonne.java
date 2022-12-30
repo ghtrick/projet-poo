@@ -1,7 +1,12 @@
 import java.awt.*;
+import java.util.LinkedList;
 import javax.swing.*;
 
 public class PartieCarcassonne extends AbstractJeu{
+
+    public PartieCarcassonne(PlateauCarcassonne plateau, SacCartesCarcassonne sac, int nbJoueurs, int nbBot) {
+        super(plateau, sac, nbJoueurs, nbBot);
+    }
 
     @Override
     public int lancerPartie() {
@@ -14,14 +19,7 @@ public class PartieCarcassonne extends AbstractJeu{
     }
 
     @Override
-    public void choisirJoueurs() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void piocher(AbstractSac s) {
-        // TODO Auto-generated method stub
+    public void piocher() {
         
     }
     

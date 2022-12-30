@@ -2,8 +2,8 @@ import java.util.LinkedList;
 
 public class PlateauCarcassonne extends AbstractPlateau{
 
-    public PlateauCarcassonne(LinkedList<LinkedList<AbstractTuile>> plateau) {
-        super(plateau);
+    public PlateauCarcassonne() {
+        super(new LinkedList<>());
     }
 
     @Override

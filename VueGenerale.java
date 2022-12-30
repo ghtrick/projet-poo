@@ -1,9 +1,18 @@
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.*;
+import java.awt.*;
 
 public class VueGenerale extends JFrame{
-    protected VueMain main = new VueMain(); 
-    protected VueChoixJoueurs choixJoueurs = new VueChoixJoueurs();
-    protected VuePartie partie = new VuePartie();
-    protected VueFin fin = new VueFin();
+
+    public VueGenerale() {
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
+        VueMenu menu = new VueMenu(this);
+    }
+
+    public static void main(String[] args) {
+        VueGenerale v = new VueGenerale();
+    }
+
 }
+

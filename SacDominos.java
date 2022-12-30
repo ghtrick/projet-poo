@@ -4,6 +4,7 @@ public class SacDominos extends AbstractSac{
 
     public SacDominos() {
         super();
+        remplirSac();
     }
 
     //Cette fonction permet de trier les nombres contenant un chiffre compris de 4 à 9 parmi les nombres allant de 0 à 333

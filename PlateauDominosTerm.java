@@ -2,9 +2,8 @@ import java.util.LinkedList;
 
 public class PlateauDominosTerm extends AbstractPlateau{
 
-    public PlateauDominosTerm(LinkedList<LinkedList<AbstractTuile>> plateau) {
-        super(plateau);
-        //TODO Auto-generated constructor stub
+    public PlateauDominosTerm() {
+        super(new LinkedList<>());
     }
 
     @Override

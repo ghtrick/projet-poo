@@ -6,6 +6,7 @@ public class SacCartesCarcassonne extends AbstractSac {
 
     public SacCartesCarcassonne() {
         super();
+        remplirSac();
     }
 
     @Override
