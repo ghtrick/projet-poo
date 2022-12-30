@@ -37,6 +37,7 @@ public class SacCartesCarcassonne extends AbstractSac {
         CarteCarcassonne carte24 = new CarteCarcassonne(24);
 
         LinkedList<CarteCarcassonne> list1 = new LinkedList<>();
+        /*
         Collection<CarteCarcassonne> elements1 = Collections.nCopies(9, carte1);
         Collection<CarteCarcassonne> elements2 = Collections.nCopies(3, carte2);
         Collection<CarteCarcassonne> elements3 = Collections.nCopies(2, carte3);
@@ -61,30 +62,69 @@ public class SacCartesCarcassonne extends AbstractSac {
         Collection<CarteCarcassonne> elements22 = Collections.nCopies(1, carte22);
         Collection<CarteCarcassonne> elements23 = Collections.nCopies(2, carte23);
         Collection<CarteCarcassonne> elements24 = Collections.nCopies(3, carte24);
-        list1.addAll(elements1);
-        list1.addAll(elements2);
-        list1.addAll(elements3);
-        list1.addAll(elements4);
-        list1.addAll(elements5);
-        list1.addAll(elements6);
-        list1.addAll(elements7);
-        list1.addAll(elements8);
-        list1.addAll(elements9);
-        list1.addAll(elements10);
-        list1.addAll(elements11);
-        list1.addAll(elements12);
-        list1.addAll(elements13);
-        list1.addAll(elements14);
-        list1.addAll(elements15);
-        list1.addAll(elements16);
-        list1.addAll(elements17);
-        list1.addAll(elements18);
-        list1.addAll(elements19);
-        list1.addAll(elements20);
-        list1.addAll(elements21);
-        list1.addAll(elements22);
-        list1.addAll(elements23);
-        list1.addAll(elements24);
+        */
+        for (int i = 0; i < 9; i++) {
+             list1.add(new CarteCarcassonne(1));
+        }
+        for (int i = 0; i < 3; i++) {
+            list1.add(new CarteCarcassonne(2));
+        }
+        for (int i = 0; i < 2; i++) {
+            list1.add(new CarteCarcassonne(3));
+        }
+        for (int i = 0; i < 3; i++) {
+            list1.add(new CarteCarcassonne(6));
+        }
+        for (int i = 0; i < 3; i++) {
+            list1.add(new CarteCarcassonne(7));
+        }
+        for (int i = 0; i < 8; i++) {
+            list1.add(new CarteCarcassonne(8));
+        }
+        for (int i = 0; i < 4; i++) {
+            list1.add(new CarteCarcassonne(9));
+        }
+        for (int i = 0; i < 5; i++) {
+            list1.add(new CarteCarcassonne(10));
+        }
+        for (int i = 0; i < 2; i++) {
+            list1.add(new CarteCarcassonne(11));
+        }
+        for (int i = 0; i < 3; i++) {
+            list1.add(new CarteCarcassonne(12));
+        }
+        for (int i = 0; i < 4; i++) {
+            list1.add(new CarteCarcassonne(13));
+        }
+        for (int i = 0; i < 2; i++) {
+            list1.add(new CarteCarcassonne(14));
+        }
+        for (int i = 0; i < 3; i++) {
+            list1.add(new CarteCarcassonne(15));
+        }
+        for (int i = 0; i < 2; i++) {
+            list1.add(new CarteCarcassonne(16));
+        }
+        for (int i = 0; i < 4; i++) {
+            list1.add(new CarteCarcassonne(17));
+        }
+        for (int i = 0; i < 3; i++) {
+            list1.add(new CarteCarcassonne(18));
+        }
+        for (int i = 0; i < 2; i++) {
+            list1.add(new CarteCarcassonne(20));
+        }
+        for (int i = 0; i < 2; i++) {
+            list1.add(new CarteCarcassonne(23));
+        }
+        for (int i = 0; i < 3; i++) {
+            list1.add(new CarteCarcassonne(24));
+        }
+        list1.add(new CarteCarcassonne(4));
+        list1.add(new CarteCarcassonne(5));
+        list1.add(new CarteCarcassonne(19));
+        list1.add(new CarteCarcassonne(21));
+        list1.add(new CarteCarcassonne(22));
         for (int i = 0; i < 72; i++) {
             int a = rand.nextInt(list1.size());
             tuilesDansLeSac.add(list1.get(a));

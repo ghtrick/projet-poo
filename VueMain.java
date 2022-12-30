@@ -1,7 +1,8 @@
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.util.LinkedList;
 import java.util.TimerTask;
-
+import java.awt.event.*;
 import javax.swing.*;
 
 public class VueMain extends JFrame{
@@ -71,6 +72,10 @@ public class VueMain extends JFrame{
                 truc4 = Util.tourner((ImageIcon) dominoCourantButton.getIcon());
                 truc4 = Util.tourner((ImageIcon) truc4);
                 truc4 = Util.tourner((ImageIcon) truc4);
+                if (jeu.main.nbFoisTourne==1) jeu.main.nbFoisTourne=0;
+                else if (jeu.main.nbFoisTourne==2) jeu.main.nbFoisTourne=1;
+                else if (jeu.main.nbFoisTourne==3) jeu.main.nbFoisTourne=2;
+                else jeu.main.nbFoisTourne=3;
             } else {
                 truc4 = jeu.plateau.createImage(jeu.main);
             }
@@ -98,6 +103,8 @@ public class VueMain extends JFrame{
             ImageIcon truc2 = new ImageIcon();
             if (jeu.plateau instanceof PlateauCarcassonne) {
                 truc2 = Util.tourner((ImageIcon) dominoCourantButton.getIcon());
+                if (jeu.main.nbFoisTourne==3) jeu.main.nbFoisTourne=0;
+                else jeu.main.nbFoisTourne++;
             } else {
                 truc2 = jeu.plateau.createImage(jeu.main);
             }
@@ -125,6 +132,7 @@ public class VueMain extends JFrame{
     }
 
     public void skip() {
+
         jeu.piocher();
 
         if (jeu.joueurCourant==jeu.nbJoueurs-1) {
@@ -140,25 +148,59 @@ public class VueMain extends JFrame{
         dominoCourantButton.setIcon(imageIconScaled);
         
         AbstractJoueur joueurCourant = jeu.joueurs.get(jeu.joueurCourant);
-        this.setTitle("Joueur "+joueurCourant.numeroDeJoueur+ " - Score: "+joueurCourant.point);
-        p.reste.setText("Domino restant: "+jeu.sac.tuilesDansLeSac.size());
+        if(jeu instanceof PartieDominos) {
+            this.setTitle("Joueur " + joueurCourant.numeroDeJoueur + " - Score: " + joueurCourant.point);
+        } else {
+            this.setTitle("Joueur " + joueurCourant.numeroDeJoueur);
+        }
+        p.reste.setText("Domino restant: " + jeu.sac.tuilesDansLeSac.size());
         
         if(joueurCourant instanceof Bot) {
             Bot b = (Bot) joueurCourant;
             skip.setEnabled(false);
             turnLeft.setEnabled(false);
             turnRight.setEnabled(false);
+            for (int i = 0; i < p.boutons.length; i++) {
+                for (int j = 0; j < p.boutons[i].length; j++) {
+                    if (!p.isPlaced[i][j]) {
+                        p.boutons[i][j].setEnabled(false);
+                    }
+                }
+            }
             java.util.Timer timer = new java.util.Timer();
             timer.schedule(new TimerTask() {
                 public void run() {
                     skip.setEnabled(true);
                     turnLeft.setEnabled(true);
                     turnRight.setEnabled(true);
-                    b.Play((Domino) jeu.main);
+                    for (int i = 0; i < p.boutons.length; i++) {
+                        for (int j = 0; j < p.boutons[i].length; j++) {
+                            if (!p.isPlaced[i][j]) {
+                                p.boutons[i][j].setEnabled(true);
+                            }
+                        }
+                    }
+                    b.Play(jeu.main);
                     timer.cancel();
                 }
             }, 3000, 3000);
         }
+    }
+
+    public void placerPion() {
+        turnLeft.setVisible(false);
+        turnRight.setVisible(false);
+        JLabel pion = new JLabel("Placez ou non votre pion");
+        dominoCourantButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // Récupération des coordonnées du clic
+                int x = e.getX();
+                int y = e.getY();
+
+            }
+        });
+
     }
     
     public void initControlBot() {

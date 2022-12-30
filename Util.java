@@ -1,6 +1,8 @@
+import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.awt.geom.AffineTransform;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -72,5 +74,35 @@ public class Util {
         // création d'un nouvel objet ImageIcon à partir de l'image pivotée
         ImageIcon rotatedIcon = new ImageIcon(image);
         return rotatedIcon;
+    }
+
+    public static ImageIcon placerPion(ImageIcon image, int j, int x, int y) {
+        try {
+            Image imageB = image.getImage();
+
+            BufferedImage bufferedImage = new BufferedImage(imageB.getWidth(null), imageB.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+            // Dessinez l'image sur le BufferedImage
+            Graphics2D g2d = bufferedImage.createGraphics();
+            g2d.drawImage(imageB, 0, 0, null);
+            g2d.dispose();
+
+            BufferedImage overlayImage = ImageIO.read(new File("./img/pion"+j+".png"));
+
+            // Créez un objet Graphics2D à partir de l'image de base
+            Graphics2D g2 = bufferedImage.createGraphics();
+
+            // Dessinez l'image superposée sur l'image de base en utilisant l'objet Graphics2D
+            g2.drawImage(overlayImage, x, y, null);
+
+            // Libérez les ressources de l'objet Graphics2D
+            g2.dispose();
+
+            // Créez un nouvel objet ImageIcon à partir de l'image de base modifiée
+            ImageIcon imageIcon = new ImageIcon(bufferedImage);
+
+            return imageIcon;
+        } catch(Exception e) {}
+        return null;
     }
 }

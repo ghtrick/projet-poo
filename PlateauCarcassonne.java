@@ -1,19 +1,24 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import javax.swing.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.*;
+import javax.imageio.ImageIO;
+import java.io.File;
+
 
 public class PlateauCarcassonne extends AbstractPlateau{
 
     public PlateauCarcassonne(PartieCarcassonne p) {
-        super(new LinkedList<>(),p);
-    }
-
-    @Override
-    public boolean ajoutTuile(AbstractTuile t, int y, int x) {
-        // TODO Auto-generated method stub
-        return false;
+        super(new LinkedList<>(), p);
+        for (int i = 0; i < 20; i++) {
+            plateau.add(new LinkedList<>());
+            for (int j = 0; j < 20; j++) {
+                plateau.get(i).add(new Domino());
+            }
+        }
     }
 
     @Override
@@ -96,5 +101,4 @@ public class PlateauCarcassonne extends AbstractPlateau{
         }
         return image;
     }
-    
 }

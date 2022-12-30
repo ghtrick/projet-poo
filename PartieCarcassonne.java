@@ -19,8 +19,28 @@ public class PartieCarcassonne extends AbstractJeu{
     }
 
     @Override
+    public void choisirJoueurs(int nbJoueurs, int nbBots) {
+        joueurs = new LinkedList<>();
+        int num = 1;
+        for (int i = 0; i < nbJoueurs-nbBots; i++) {
+            joueurs.add(new Joueur(0, num));
+            num++;
+        }
+        for (int i = 0; i < nbBots; i++) {
+            joueurs.add(new Bot(0, num));
+            num++;
+        }
+    }
+
+    @Override
     public void piocher() {
-        
+        if(sac.tuilesDansLeSac.isEmpty()) {
+            partieFinie(max()+1);
+            return;
+        }
+        CarteCarcassonne d = (CarteCarcassonne) sac.tuilesDansLeSac.getFirst();
+        main=d;
+        sac.tuilesDansLeSac.removeFirst();
     }
     
 }

@@ -39,6 +39,8 @@ public class VueMenu extends AbstractPanel{
     public void setJouerCarcassonne() {
         jouerCarcassonne.addActionListener(e -> {
             VueChoixJoueurs choixJoueurs = new VueChoixJoueurs(j, false);
+            this.setVisible(false);
+            j.setContentPane(choixJoueurs);
         });
     }
 

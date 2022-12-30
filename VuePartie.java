@@ -37,8 +37,6 @@ public class VuePartie extends AbstractPanel {
             p.plateau=new PlateauCarcassonne((PartieCarcassonne) p);
         }
 
-        main = new VueMain(p, this);
-
         this.setLayout(new BorderLayout());
 
         setReste();
@@ -47,6 +45,25 @@ public class VuePartie extends AbstractPanel {
         setTopPanel();
         setPlateauPanel();
         setScrollPanel();
+        scrollPanel.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                initialPosition = e.getPoint();
+            }
+        });
+        scrollPanel.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                JScrollPane scrollPane = (JScrollPane) e.getSource();
+                int x = initialPosition.x - e.getX();
+                int y = initialPosition.y - e.getY();
+                int newX = scrollPane.getHorizontalScrollBar().getValue() + x;
+                int newY = scrollPane.getVerticalScrollBar().getValue() + y;
+                scrollPane.getHorizontalScrollBar().setValue(newX);
+                scrollPane.getVerticalScrollBar().setValue(newY);
+                initialPosition = e.getPoint();
+            }
+        });
         setIsPlaced();
         setBoutons();
         setBoutonsPlus();
@@ -55,6 +72,8 @@ public class VuePartie extends AbstractPanel {
         
         add(topPanel,BorderLayout.NORTH);
         add(scrollPanel,BorderLayout.SOUTH);
+
+        main = new VueMain(p, this);
     }
 
     public void setTopPanel() {
@@ -79,25 +98,6 @@ public class VuePartie extends AbstractPanel {
         scrollPanel.setViewportView(plateauPanel);
         scrollPanel.setPreferredSize(new Dimension(j.getWidth(), j.getHeight()*4/5));
         scrollPanel.setWheelScrollingEnabled(true);
-        scrollPanel.addMouseMotionListener(new MouseInputAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                initialPosition = e.getPoint();
-            }
-        });
-        scrollPanel.addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                JScrollPane scrollPane = (JScrollPane) e.getSource();
-                int x = initialPosition.x - e.getX();
-                int y = initialPosition.y - e.getY();
-                int newX = scrollPane.getHorizontalScrollBar().getValue() + x;
-                int newY = scrollPane.getVerticalScrollBar().getValue() + y;
-                scrollPane.getHorizontalScrollBar().setValue(newX);
-                scrollPane.getVerticalScrollBar().setValue(newY);
-                initialPosition = e.getPoint();     
-            }
-        });
     }
 
     public void setReste() {
@@ -124,26 +124,7 @@ public class VuePartie extends AbstractPanel {
                 int I = i;
                 int J = j;
                 boutons[i][j].addActionListener(e -> {
-                    if(!isPlaced[I][J]) {
-                        if(p.plateau.ajoutTuile(p.main,I,J)) {
-                            if(I==0||J==0||I==boutons.length-1||J==boutons[0].length-1) return;
-                            ImageIcon image = p.plateau.createImage(p.main);
-                            Image imageScaled = image.getImage().getScaledInstance(600/20*zoomFactor, 600/20*zoomFactor, Image.SCALE_SMOOTH); 
-                            ImageIcon imageIconScaled = new ImageIcon(imageScaled); 
-                            imageIconScaled.setImage(imageScaled);
-                            boutons[I][J].setIcon(imageIconScaled);
-                            boutons[I+1][J].setVisible(true);
-                            boutons[I][J+1].setVisible(true);
-                            boutons[I-1][J].setVisible(true);
-                            boutons[I][J-1].setVisible(true);                      
-                            main.skip();
-                            isPlaced[I][J] = true;
-                        }
-                        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                        for(int k = 0; k<p.plateau.plateau.size(); k++) {
-                            System.out.println(Util.afficheDominoListe(p.plateau.plateau.get(k)));
-                        }
-                    }
+                    clickBouton(I,J);
                 });
                 plateauPanel.add(boutons[i][j]);
             }
@@ -234,6 +215,34 @@ public class VuePartie extends AbstractPanel {
         boutons[boutons.length/2][boutons[0].length/2+1].setVisible(true);
         boutons[boutons.length/2-1][boutons[0].length/2].setVisible(true);
         boutons[boutons.length/2][boutons[0].length/2-1].setVisible(true);
+        isPlaced[boutons.length/2][boutons[0].length/2] = true;
         p.plateau.plateau.get(10).set(10, p.main);
+    }
+
+    public void clickBouton(int I, int J) {
+        if (p.plateau.ajoutTuile(p.main, I, J)) {
+            if (I == 0 || J == 0 || I == boutons.length - 1 || J == boutons[0].length - 1) return;
+            ImageIcon image = p.plateau.createImage(p.main);
+            if (p instanceof PartieCarcassonne) {
+                image = (ImageIcon) main.dominoCourantButton.getIcon();
+            }
+            Image imageScaled = image.getImage().getScaledInstance(600 / 20 * zoomFactor, 600 / 20 * zoomFactor, Image.SCALE_SMOOTH);
+            ImageIcon imageIconScaled = new ImageIcon(imageScaled);
+            imageIconScaled.setImage(imageScaled);
+            boutons[I][J].setIcon(imageIconScaled);
+            boutons[I + 1][J].setVisible(true);
+            boutons[I][J + 1].setVisible(true);
+            boutons[I - 1][J].setVisible(true);
+            boutons[I][J - 1].setVisible(true);
+            isPlaced[I][J] = true;
+            main.skip();
+        }
+        LinkedList<AbstractTuile> l = new LinkedList<>();
+        l.add(p.main);
+        System.out.println(Util.afficheDominoListe(l));
+        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        for (int k = 0; k < p.plateau.plateau.size(); k++) {
+            System.out.println(Util.afficheDominoListe(p.plateau.plateau.get(k)));
+        }
     }
 }

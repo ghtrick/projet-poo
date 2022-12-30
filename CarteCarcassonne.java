@@ -1,9 +1,14 @@
 public class CarteCarcassonne extends AbstractTuile {
     protected int index;
 
+    public CarteCarcassonne() {
+        super(null);
+    }
+
     public CarteCarcassonne(int index) {
         super(null);
         this.index=index;
+        nbFoisTourne=0;
         switch (index) {
             case 1:
                 numeros = new int[][]{{0,0,0},{0,0,0},{0,1,0},{0,1,0}};
@@ -54,7 +59,7 @@ public class CarteCarcassonne extends AbstractTuile {
                 break;
             
             case 13:
-                numeros = new int[][]{{2,2,3},{0,0,0},{3,0,0},{2,2,3}};
+                numeros = new int[][]{{2,2,3},{0,0,0},{0,0,0},{2,2,3}};
                 break;
         
             case 14:

@@ -55,7 +55,7 @@ public class VueChoixJoueurs extends AbstractPanel{
     public void setPlusJoueurs() {
         plusJoueurs.setBounds(j.getWidth()/2+50, j.getHeight()/2-50,100,100);
         plusJoueurs.addActionListener(a -> {
-            if(nbJoueurs<4)nbJoueurs++;
+            if(nbJoueurs<5)nbJoueurs++;
             nbJoueursLabel.setText("Nombres de joueurs : "+nbJoueurs);
         });
     }
@@ -63,7 +63,7 @@ public class VueChoixJoueurs extends AbstractPanel{
     public void setPlusBots() {
         plusBots.setBounds(j.getWidth()/2+50, j.getHeight()/2+100, 100,100);
         plusBots.addActionListener(a-> {
-            if(nbBot<nbJoueurs) nbBot++;
+            if(nbBot<nbJoueurs-1) nbBot++;
             nbBotsLabel.setText("Nombres de bot : "+nbBot);
         });
     }
