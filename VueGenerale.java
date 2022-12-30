@@ -5,7 +5,7 @@ public class VueGenerale extends JFrame{
 
     public VueGenerale() {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(3);
         this.setVisible(true);
         VueMenu menu = new VueMenu(this);
     }

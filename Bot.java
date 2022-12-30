@@ -1,23 +1,23 @@
 public class Bot extends AbstractJoueur{
 
-    VueMain main;
+    ControlBot c;
     
     public Bot(int point, int numeroDeJoueur) {
         super(point, numeroDeJoueur);
     }
 
     public void Play(Domino d) {
-        for(int i=0; i<main.p.boutons.length; i++) {
-            for (int j = 0; j < main.p.boutons[i].length; j++) {
-                if(main.p.boutons[i][j].isVisible()) {
-                    if(main.p.p.plateau.ajoutTuile(d, i, j)) {
-                        main.p.boutons[i][j].doClick();
+        for(int i=0; i<c.main.p.boutons.length; i++) {
+            for (int j = 0; j < c.main.p.boutons[i].length; j++) {
+                if(c.main.p.boutons[i][j].isVisible()) {
+                    if(c.main.p.p.plateau.ajoutTuile(d, i, j)) {
+                        c.main.p.boutons[i][j].doClick();
                         return;
                     }
                 }
             }
         }
-        main.skip();
+        c.main.skip();
     }
 
     /*public void jouerText(int joueurCourant) {

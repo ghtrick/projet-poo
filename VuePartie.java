@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.LinkedList;
 
 
 public class VuePartie extends AbstractPanel {
@@ -28,21 +29,28 @@ public class VuePartie extends AbstractPanel {
 
         boutons = new JButton[20][20];
         
-        if (modeDeJeu) p = new PartieDominos(new PlateauDominos(), new SacDominos(), nbJoueurs, nbBot);
-        else p = new PartieCarcassonne(new PlateauCarcassonne(), new SacCartesCarcassonne(), nbJoueurs, nbBot);
+        if (modeDeJeu) {
+            p = new PartieDominos(null, new SacDominos(), nbJoueurs, nbBot);
+            p.plateau=new PlateauDominos((PartieDominos) p);
+        } else {
+            p = new PartieCarcassonne(null, new SacCartesCarcassonne(), nbJoueurs, nbBot); 
+            p.plateau=new PlateauCarcassonne((PartieCarcassonne) p);
+        }
 
         main = new VueMain(p, this);
 
         this.setLayout(new BorderLayout());
 
+        setReste();
+        setZoomIn();
+        setZoomOut();
         setTopPanel();
         setPlateauPanel();
         setScrollPanel();
-        setReste();
         setIsPlaced();
         setBoutons();
-        setZoomIn();
-        setZoomOut();
+        setBoutonsPlus();
+        initBoutonDepart();
         setQuitter();
         
         add(topPanel,BorderLayout.NORTH);
@@ -66,7 +74,7 @@ public class VuePartie extends AbstractPanel {
     }
 
     public void setScrollPanel() {
-        scrollPanel = new JScrollPane();
+        initialPosition=new Point();
         scrollPanel = new JScrollPane();
         scrollPanel.setViewportView(plateauPanel);
         scrollPanel.setPreferredSize(new Dimension(j.getWidth(), j.getHeight()*4/5));
@@ -76,6 +84,8 @@ public class VuePartie extends AbstractPanel {
             public void mousePressed(MouseEvent e) {
                 initialPosition = e.getPoint();
             }
+        });
+        scrollPanel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
                 JScrollPane scrollPane = (JScrollPane) e.getSource();
@@ -88,7 +98,6 @@ public class VuePartie extends AbstractPanel {
                 initialPosition = e.getPoint();     
             }
         });
-        add(plateauPanel);
     }
 
     public void setReste() {
@@ -118,7 +127,7 @@ public class VuePartie extends AbstractPanel {
                     if(!isPlaced[I][J]) {
                         if(p.plateau.ajoutTuile(p.main,I,J)) {
                             if(I==0||J==0||I==boutons.length-1||J==boutons[0].length-1) return;
-                            ImageIcon image = Util.createImageDomino(p.main);
+                            ImageIcon image = p.plateau.createImage(p.main);
                             Image imageScaled = image.getImage().getScaledInstance(600/20*zoomFactor, 600/20*zoomFactor, Image.SCALE_SMOOTH); 
                             ImageIcon imageIconScaled = new ImageIcon(imageScaled); 
                             imageIconScaled.setImage(imageScaled);
@@ -130,6 +139,10 @@ public class VuePartie extends AbstractPanel {
                             main.skip();
                             isPlaced[I][J] = true;
                         }
+                        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                        for(int k = 0; k<p.plateau.plateau.size(); k++) {
+                            System.out.println(Util.afficheDominoListe(p.plateau.plateau.get(k)));
+                        }
                     }
                 });
                 plateauPanel.add(boutons[i][j]);
@@ -139,6 +152,7 @@ public class VuePartie extends AbstractPanel {
     }
 
     public void setZoomIn() {
+        zoomIn = new JButton("Zoom+");
         zoomIn.setBounds(j.getWidth()-130, 10, 100, 50);
         zoomIn.addActionListener(e->{
             zoomIn();
@@ -146,7 +160,8 @@ public class VuePartie extends AbstractPanel {
     }
 
     public void setZoomOut() {
-        zoomOut.setBounds(j.getWidth()-130, 10, 100, 50);
+        zoomOut = new JButton("Zoom-");
+        zoomOut.setBounds(j.getWidth()-240, 10, 100, 50);
         zoomOut.addActionListener(e->{
             zoomOut();
         });
@@ -194,5 +209,31 @@ public class VuePartie extends AbstractPanel {
             }
             scrollPanel.revalidate();
         }// Repaint the panel with the new scale factor
+    }
+
+    public void setBoutonsPlus() {
+        for(int i=0; i<boutons.length;i++) {
+            for (int j = 0; j < boutons[0].length; j++) {
+                ImageIcon image = new ImageIcon("./img/plus.png");
+                Image imageScaled = image.getImage().getScaledInstance(600/20*zoomFactor, 600/20*zoomFactor, Image.SCALE_SMOOTH); 
+                ImageIcon imageIconScaled = new ImageIcon(imageScaled); 
+                imageIconScaled.setImage(imageScaled);
+                boutons[i][j].setIcon(imageIconScaled);
+            }
+        }
+    }
+
+    public void initBoutonDepart() {
+        p.piocher();
+        ImageIcon image = p.plateau.createImage(p.main);
+        Image imageScaled = image.getImage().getScaledInstance(600/20*zoomFactor, 600/20*zoomFactor, Image.SCALE_SMOOTH); 
+        ImageIcon imageIconScaled = new ImageIcon(imageScaled); 
+        imageIconScaled.setImage(imageScaled);
+        boutons[boutons.length/2][boutons[0].length/2].setIcon(imageIconScaled);
+        boutons[boutons.length/2+1][boutons[0].length/2].setVisible(true);
+        boutons[boutons.length/2][boutons[0].length/2+1].setVisible(true);
+        boutons[boutons.length/2-1][boutons[0].length/2].setVisible(true);
+        boutons[boutons.length/2][boutons[0].length/2-1].setVisible(true);
+        p.plateau.plateau.get(10).set(10, p.main);
     }
 }

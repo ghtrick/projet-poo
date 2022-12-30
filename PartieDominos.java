@@ -1,6 +1,9 @@
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class PartieDominos extends AbstractJeu {
+
+    VueMain vmain;
 
     public PartieDominos(PlateauDominos plateau, SacDominos sac, int nbJoueurs, int nbBot) {
         super(plateau, sac, nbJoueurs, nbBot);
@@ -19,12 +22,15 @@ public class PartieDominos extends AbstractJeu {
 
     @Override
     public void choisirJoueurs(int nbJoueurs, int nbBots) {
+        joueurs = new LinkedList<>();
         int num = 1;
         for (int i = 0; i < nbJoueurs-nbBots; i++) {
             joueurs.add(new Joueur(0, num));
+            num++;
         }
         for (int i = 0; i < nbBots; i++) {
             joueurs.add(new Bot(0, num));
+            num++;
         }
     }
 
@@ -37,8 +43,6 @@ public class PartieDominos extends AbstractJeu {
         Domino d = (Domino) sac.tuilesDansLeSac.getFirst();
         main=d;
         sac.tuilesDansLeSac.removeFirst();
-        if (joueurCourant==nbJoueurs+1) joueurCourant=1;
-        else joueurCourant+=1;
     }
 
 }

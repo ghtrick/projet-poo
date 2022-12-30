@@ -8,4 +8,12 @@ public abstract class AbstractTuile {
         this.numeros=numeros;
     }
 
+    public boolean isEstVide() {
+        return estVide;
+    }
+
+    public int[][] getNumeros() {
+        return numeros;
+    }
+
 }

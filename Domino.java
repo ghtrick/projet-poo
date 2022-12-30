@@ -41,12 +41,4 @@ public class Domino extends AbstractTuile{
         }
         return false;
     }
-
-    public boolean isEstVide() {
-        return false;
-    }
-
-    public String[][] getNumeros() {
-        return null;
-    }
 }

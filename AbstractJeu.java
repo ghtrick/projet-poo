@@ -8,13 +8,15 @@ public abstract class AbstractJeu {
     protected int joueurCourant;
     protected int nbJoueurs;
     protected int nbBot;
+    protected VueMain vmain;
 
     public AbstractJeu(AbstractPlateau plateau, AbstractSac sac, int nbJoueurs, int nbBot) {
         this.plateau=plateau;
         this.sac=sac;
-        System.out.println(nbJoueurs);
-        System.out.println(nbBot);
+        this.nbJoueurs=nbJoueurs;
+        this.nbBot=nbBot;
         choisirJoueurs(nbJoueurs, nbBot);
+        joueurCourant=0;
     }
 
     public void choisirJoueurs(int nbJoueurs, int nbBot) {

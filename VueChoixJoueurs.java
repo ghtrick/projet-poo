@@ -17,7 +17,6 @@ public class VueChoixJoueurs extends AbstractPanel{
 
     public VueChoixJoueurs(JFrame j, boolean modeDeJeu) {
         super(j);
-        System.out.println("a");
         this.modeDeJeu=modeDeJeu;
 
         this.setLayout(null);

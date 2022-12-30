@@ -1,14 +1,13 @@
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
+import java.awt.geom.AffineTransform;
 import javax.swing.ImageIcon;
-import java.io.File;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Util {
     
-    public static String afficheDominoListe(LinkedList<Domino> l) {
+    public static String afficheDominoListe(LinkedList<AbstractTuile> l) {
         String res = "";
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < l.size(); j++) {
@@ -56,47 +55,22 @@ public class Util {
         t.numeros[3] = tmp[2];
     }
 
-    public static ImageIcon createImageDomino(AbstractTuile d) {
-        try {
-           int[][] tmp = {d.numeros[0],d.numeros[3],d.numeros[1],d.numeros[2]};
+    public static ImageIcon tourner(ImageIcon icon) {
+        // création de l'objet AffineTransform
+        AffineTransform transform = new AffineTransform();
 
-           BufferedImage image1 = ImageIO.read(new File("img/"+tmp[0][0]+"b.png"));
-           BufferedImage image2 = ImageIO.read(new File("img/"+tmp[0][1]+"b.png"));
-           BufferedImage image3 = ImageIO.read(new File("img/"+tmp[0][2]+"b.png"));
-           BufferedImage image4 = ImageIO.read(new File("img/"+tmp[1][0]+"b.png"));
-           BufferedImage image5 = ImageIO.read(new File("img/"+tmp[1][1]+"b.png"));
-           BufferedImage image6 = ImageIO.read(new File("img/"+tmp[1][2]+"b.png"));
-           BufferedImage image7 = ImageIO.read(new File("img/"+tmp[2][0]+"b.png"));
-           BufferedImage image8 = ImageIO.read(new File("img/"+tmp[2][1]+"b.png"));
-           BufferedImage image9 = ImageIO.read(new File("img/"+tmp[2][2]+"b.png"));
-           BufferedImage image10 = ImageIO.read(new File("img/"+tmp[3][0]+"b.png"));
-           BufferedImage image11 = ImageIO.read(new File("img/"+tmp[3][1]+"b.png"));
-           BufferedImage image12 = ImageIO.read(new File("img/"+tmp[3][2]+"b.png"));
-         
-           // Créer une nouvelle image avec la largeur et la hauteur des deux images
-           int width = image1.getWidth()*5;
-           int height = image1.getHeight()*5;
-           BufferedImage combined = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-         
-           // Dessiner les deux images côte à côte
-           Graphics g = combined.getGraphics();
-           g.drawImage(image1, width/5, 0, null);
-           g.drawImage(image2, width/5*2, 0, null);
-           g.drawImage(image3, width/5*3, 0, null);
-           g.drawImage(image4, 0, height/5, null);
-           g.drawImage(image5, 0, height/5*2, null);
-           g.drawImage(image6, 0, height/5*3, null);
-           g.drawImage(image7, width/5*4, height/5, null);
-           g.drawImage(image8, width/5*4, height/5*2, null);
-           g.drawImage(image9, width/5*4, height/5*3, null);
-           g.drawImage(image10, width/5, height/5*4, null);
-           g.drawImage(image11, width/5*2, height/5*4, null);
-           g.drawImage(image12, width/5*3, height/5*4, null);
-           ImageIcon image = new ImageIcon(combined);
-           return image;
-           
-         } catch (Exception e) {System.out.println(e);
-       }
-       return null;
-   }
+        // définition de la transformation de rotation de 90 degrés
+        transform.rotate(Math.toRadians(90), icon.getIconWidth() / 2, icon.getIconHeight() / 2);
+
+        // création de l'objet Graphics2D à partir de l'image de l'ImageIcon
+        BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = image.createGraphics();
+
+        // dessin de l'image en appliquant la transformation de rotation
+        g.drawImage(icon.getImage(), transform, null);
+
+        // création d'un nouvel objet ImageIcon à partir de l'image pivotée
+        ImageIcon rotatedIcon = new ImageIcon(image);
+        return rotatedIcon;
+    }
 }

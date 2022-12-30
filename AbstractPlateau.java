@@ -1,14 +1,65 @@
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.awt.*;
+import javax.swing.*;
 
 public abstract class AbstractPlateau {
+    protected AbstractJeu jeu;
     protected LinkedList<LinkedList<AbstractTuile>> plateau;
     protected int nbLignes;
     protected int nbColonnes;
 
-    public AbstractPlateau(LinkedList<LinkedList<AbstractTuile>> plateau) {
+    public AbstractPlateau(LinkedList<LinkedList<AbstractTuile>> plateau, AbstractJeu jeu) {
         this.plateau = plateau;
+        this.jeu=jeu;
     }
 
-    public abstract boolean ajoutTuile(AbstractTuile t, int y, int x);
+    public boolean ajoutTuile(AbstractTuile t, int y, int x) {
+        int res = 0;
+        LinkedList<Boolean> bool = new LinkedList<>();
+        boolean numeroCorrect = true;
+        try {
+            bool.add(Arrays.equals(plateau.get(y).get(x+1).numeros[3], t.numeros[1]));
+            for (int x1 :  t.numeros[1]) {
+                res+=x1;
+            }
+        } catch (Exception e) {}
+        try {
+            bool.add(Arrays.equals(plateau.get(y+1).get(x).numeros[0], t.numeros[2]));
+            for (int x1 :  t.numeros[2]) {
+                res+=x1;
+            }
+        } catch (Exception e) {}
+        try {
+            bool.add(Arrays.equals(plateau.get(y).get(x-1).numeros[1], t.numeros[3]));
+            for (int x1 :  t.numeros[3]) {
+                res+=x1;
+            }
+        } catch (Exception e) {}
+        try {
+           bool.add(Arrays.equals(plateau.get(y-1).get(x).numeros[2], t.numeros[0]));
+            for (int x1 :  t.numeros[0]) {
+                res+=x1;
+            } 
+        } catch (Exception e) {}
+
+        for(int i=0; i<bool.size(); i++) {
+            if(!bool.get(i)) {
+                numeroCorrect = false;
+            }
+        }
+        if (bool.isEmpty()) {
+            numeroCorrect = false;
+        }
+        if(numeroCorrect) {
+            plateau.get(y).set(x, t);
+            int res3 = res+jeu.joueurs.get(jeu.joueurCourant).point;
+            jeu.joueurs.get(jeu.joueurCourant).point = res3;
+            return true;
+        }
+        return false;
+    }
+
+    public abstract ImageIcon createImage(AbstractTuile t);
  
 }
