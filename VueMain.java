@@ -187,20 +187,29 @@ public class VueMain extends JFrame{
         }
     }
 
-    public void placerPion() {
+    public void placerPion(int i, int j) {
+        setAutoRequestFocus(true);
         turnLeft.setVisible(false);
         turnRight.setVisible(false);
         JLabel pion = new JLabel("Placez ou non votre pion");
         dominoCourantButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                // Récupération des coordonnées du clic
-                int x = e.getX();
-                int y = e.getY();
-
+            // Récupération des coordonnées du clic
+            int x = e.getX();
+            int y = e.getY();
+            ImageIcon newImg = Util.placerPion((ImageIcon) dominoCourantButton.getIcon(), jeu.joueurs.get(jeu.joueurCourant).numeroDeJoueur, x, y);
+            dominoCourantButton.setIcon(newImg);
+            turnLeft.setVisible(true);
+            turnRight.setVisible(true);
+            p.clickBouton(i, j);
             }
         });
-
+        skip.addActionListener(e->{
+            turnLeft.setVisible(true);
+            turnRight.setVisible(true);
+            p.clickBouton(i, j);
+        });
     }
     
     public void initControlBot() {
