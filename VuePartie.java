@@ -125,7 +125,7 @@ public class VuePartie extends AbstractPanel {
                 int J = j;
                 boutons[i][j].addActionListener(e -> {
                     if (p.plateau.ajoutTuile(p.main, I, J)) {
-                        clickBouton(I,J);
+                        main.placerPion(I,J);
                     }
                 });
                 plateauPanel.add(boutons[i][j]);
@@ -225,7 +225,7 @@ public class VuePartie extends AbstractPanel {
         if (I == 0 || J == 0 || I == boutons.length - 1 || J == boutons[0].length - 1) return;
         ImageIcon image = p.plateau.createImage(p.main);
         if (p instanceof PartieCarcassonne) {
-            image = (ImageIcon) main.dominoCourantButton.getIcon();
+            image = (ImageIcon) main.dominoCourantButton2.getIcon();
         }
         Image imageScaled = image.getImage().getScaledInstance(600 / 20 * zoomFactor, 600 / 20 * zoomFactor, Image.SCALE_SMOOTH);
         ImageIcon imageIconScaled = new ImageIcon(imageScaled);

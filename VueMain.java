@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.MouseAdapter;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.TimerTask;
 import java.awt.event.*;
@@ -10,9 +11,13 @@ public class VueMain extends JFrame{
     AbstractJeu jeu;
     VuePartie p;
     JButton dominoCourantButton;
+    JButton dominoCourantButton2;
     JButton turnLeft; 
     JButton turnRight;
     JButton skip;
+    JButton skip2;
+    int i;
+    int j;
     
     public VueMain(AbstractJeu jeu, VuePartie p) {
 
@@ -37,6 +42,8 @@ public class VueMain extends JFrame{
         this.add(turnLeft);
         this.add(turnRight);
         this.add(skip);
+        this.add(skip2);
+        this.add(dominoCourantButton2);
 
         jeu.vmain=this;
     }
@@ -50,6 +57,24 @@ public class VueMain extends JFrame{
         ImageIcon imageIconScaled = new ImageIcon(imageScaled); 
         imageIconScaled.setImage(imageScaled);
         dominoCourantButton.setIcon(imageIconScaled);
+
+        dominoCourantButton2 = new JButton();
+        dominoCourantButton2.setBounds(25,10,250,250);
+        dominoCourantButton2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // Récupération des coordonnées du clic
+                int x = e.getX();
+                int y = e.getY();
+                ImageIcon newImg = Util.placerPion((ImageIcon) dominoCourantButton2.getIcon(), jeu.joueurs.get(jeu.joueurCourant).numeroDeJoueur, x, y);
+                dominoCourantButton2.setIcon(newImg);
+                turnLeft.setVisible(true);
+                turnRight.setVisible(true);
+                p.clickBouton(i, j);
+                dominoCourantButton2.setVisible(false);
+                dominoCourantButton.setVisible(true);
+            }
+        });
     }
 
     public void setTurnLeft() {
@@ -129,10 +154,31 @@ public class VueMain extends JFrame{
         skip.addActionListener(e-> {
             skip();
         });
+
+        skip2 = new JButton();
+        skip2.setBackground(new Color(59,136,195));
+        skip2.setBounds(101,275,100,50);
+
+        ImageIcon skipII = new ImageIcon("./img/skip.png");
+        Image imageScaled2 = skipII.getImage().getScaledInstance(50,50, Image.SCALE_SMOOTH); 
+        ImageIcon imageIconScaled2 = new ImageIcon(imageScaled2); 
+        imageIconScaled2.setImage(imageScaled2);
+        skip2.setIcon(imageIconScaled2);
+
+        skip2.addActionListener(e -> {
+            turnLeft.setVisible(true);
+            turnRight.setVisible(true);
+            p.clickBouton(i, j);
+            skip2.setVisible(false);
+            skip.setVisible(true);
+            dominoCourantButton2.setVisible(false);
+            dominoCourantButton.setVisible(true);
+        });
+
     }
 
     public void skip() {
-
+        System.out.println("qqsdqhdksqd");
         jeu.piocher();
 
         if (jeu.joueurCourant==jeu.nbJoueurs-1) {
@@ -188,28 +234,21 @@ public class VueMain extends JFrame{
     }
 
     public void placerPion(int i, int j) {
-        setAutoRequestFocus(true);
+        // setAutoRequestFocus(true);
+        this.i = i;
+        this.j = j;
+        ImageIcon truc2 = (ImageIcon)dominoCourantButton.getIcon();
+        Image imageScaled2 = truc2.getImage().getScaledInstance(250,250, Image.SCALE_SMOOTH); 
+        ImageIcon imageIconScaled2 = new ImageIcon(imageScaled2); 
+        imageIconScaled2.setImage(imageScaled2);
+        dominoCourantButton2.setIcon(imageIconScaled2);
+        skip.setVisible(false);
+        skip2.setVisible(true);
         turnLeft.setVisible(false);
         turnRight.setVisible(false);
+        dominoCourantButton.setVisible(false);
+        dominoCourantButton2.setVisible(true);
         JLabel pion = new JLabel("Placez ou non votre pion");
-        dominoCourantButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-            // Récupération des coordonnées du clic
-            int x = e.getX();
-            int y = e.getY();
-            ImageIcon newImg = Util.placerPion((ImageIcon) dominoCourantButton.getIcon(), jeu.joueurs.get(jeu.joueurCourant).numeroDeJoueur, x, y);
-            dominoCourantButton.setIcon(newImg);
-            turnLeft.setVisible(true);
-            turnRight.setVisible(true);
-            p.clickBouton(i, j);
-            }
-        });
-        skip.addActionListener(e->{
-            turnLeft.setVisible(true);
-            turnRight.setVisible(true);
-            p.clickBouton(i, j);
-        });
     }
     
     public void initControlBot() {

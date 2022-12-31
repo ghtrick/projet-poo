@@ -8,6 +8,7 @@ public class VueGenerale extends JFrame{
         this.setDefaultCloseOperation(3);
         this.setVisible(true);
         VueMenu menu = new VueMenu(this);
+        this.setVisible(true);
     }
 
     public static void main(String[] args) {
