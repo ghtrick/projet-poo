@@ -178,6 +178,11 @@ public class VueMain extends JFrame{
     }
 
     public void skip() {
+        if (p.p.joueurs.size()==1 || p.p.sac.tuilesDansLeSac.isEmpty()) {
+            System.out.println("hgdfnhgjdfgdserqfbhjkudn,jxbcfvdfhgju");
+            p.partieFini(p.p.max());
+            return;
+        }
         System.out.println("qqsdqhdksqd");
         jeu.piocher();
 

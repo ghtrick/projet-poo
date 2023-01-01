@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 
@@ -22,6 +23,8 @@ public class VuePartie extends AbstractPanel {
     protected JButton zoomOut;
     protected JButton quitter;
     protected Point initialPosition;
+
+    protected JButton abandonner;
 
     public VuePartie(JFrame j, boolean modeDeJeu, int nbJoueurs, int nbBot) {
         super(j);
@@ -45,6 +48,7 @@ public class VuePartie extends AbstractPanel {
         setTopPanel();
         setPlateauPanel();
         setScrollPanel();
+        setAbandonner();
         scrollPanel.addMouseListener(new MouseInputAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -206,6 +210,20 @@ public class VuePartie extends AbstractPanel {
         }
     }
 
+    public void setAbandonner() {
+        abandonner = new JButton("Abandonner");
+        abandonner.setBounds(10, 70, 200, 50);
+        abandonner.addActionListener(e -> {
+            p.joueurs.remove(p.joueurCourant);
+            System.out.println(Arrays.toString(p.joueurs.toArray()));
+            System.out.println(p.joueurs.size());
+            p.joueurCourant--;
+            p.nbJoueurs--;
+            main.skip();
+        });
+        topPanel.add(abandonner);
+    }
+
     public void initBoutonDepart() {
         p.piocher();
         ImageIcon image = p.plateau.createImage(p.main);
@@ -222,6 +240,10 @@ public class VuePartie extends AbstractPanel {
     }
 
     public void clickBouton(int I, int J) {
+        if (p.plateau.plateau.isEmpty()) {
+            partieFini(p.max());
+            return;
+        }
         if (I == 0 || J == 0 || I == boutons.length - 1 || J == boutons[0].length - 1) return;
         ImageIcon image = p.plateau.createImage(p.main);
         if (p instanceof PartieCarcassonne) {
@@ -239,12 +261,33 @@ public class VuePartie extends AbstractPanel {
         main.skip();
         LinkedList<AbstractTuile> l = new LinkedList<>();
         l.add(p.main);
-        System.out.println(Util.afficheDominoListe(l));
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-        for (int k = 0; k < p.plateau.plateau.size(); k++) {
-            System.out.println(Util.afficheDominoListe(p.plateau.plateau.get(k)));
-        }
     }
 
+    public void partieFini(int Gagnant) {
+        JButton menu = new JButton("Menu");
+        setVisible(false);
+        JPanel fin = new JPanel();
+        fin.setPreferredSize(new Dimension(j.getWidth(),j.getHeight()));
+        fin.setLayout(null);
+        JLabel finT = new JLabel();
+        finT.setBounds(j.getWidth()/2-200, j.getHeight()/2-250, 500, 500);
+        if(Gagnant!=0) {
+            finT.setText("Joueur" + Gagnant + " à gagné");
+            finT.setFont(new Font("Arial", 0 , 50));
+            fin.add(finT,BorderLayout.CENTER);
+        } else {
+            finT.setText("Égalité");
+            finT.setFont(new Font("Arial", 0 , 50));
+            finT.setBounds(j.getWidth()/2-100, j.getHeight()/2-250, 500, 500);
+            fin.add(finT,BorderLayout.CENTER);
+        }
+        main.dispose();
+        menu.setBounds(j.getWidth()/2-100, j.getHeight()/2+150, 100, 50);
+        menu.addActionListener(e-> {
+            VueGenerale g = new VueGenerale();
+        });
+        fin.add(menu, BorderLayout.SOUTH);
+        j.setContentPane(fin);
+    }
 
 }

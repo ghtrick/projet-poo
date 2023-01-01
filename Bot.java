@@ -19,15 +19,4 @@ public class Bot extends AbstractJoueur{
         }
         c.main.skip();
     }
-
-    /*public void jouerText(int joueurCourant) {
-        for(int i=-1; i<model.p.plateau.size()+2; i++) {
-            for (int j = -1; j < model.p.plateau.get(0).size()+2; j++) {
-                if(model.p.ajoutDomino(main, i, j)) {
-                    model.joueurs.get(joueurCourant).setPoint(model.point(i,j)+model.joueurs.get(joueurCourant).getPoint());
-                    return;
-                }
-            }
-        }
-    }*/
 }

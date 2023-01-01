@@ -8,6 +8,14 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Util {
+
+    public static String affichePlateau(PlateauDominosTerm p) {
+        String res = "";
+        for (int i = 0; i < p.plateau.size(); i++) {
+            res+=afficheDominoListe(p.plateau.get(i));
+        }
+        return res;
+    }
     
     public static String afficheDominoListe(LinkedList<AbstractTuile> l) {
         String res = "";

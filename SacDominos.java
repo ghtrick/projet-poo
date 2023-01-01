@@ -65,5 +65,7 @@ public class SacDominos extends AbstractSac{
         LinkedList<Integer> l = new LinkedList<Integer>();
         triNombres(l);
         randomParmiLesNombresTries(l);
+        int[][] tab = new int[][]{{1,1,1},{2,2,2},{3,3,3},{0,0,0}};
+        tuilesDansLeSac.set(0, new Domino(tab));
     }
 }

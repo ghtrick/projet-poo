@@ -32,6 +32,9 @@ public abstract class AbstractJeu {
     }
 
     public int max() {
+        if (joueurs.size()==1) {
+            return joueurs.get(0).numeroDeJoueur;
+        }
         int scoremax = 0;
         int indexmax = 0;
         for (int i = 0; i < joueurs.size(); i++) {
@@ -43,6 +46,7 @@ public abstract class AbstractJeu {
                 indexmax = -1;
             }
         }
+        if (indexmax==-1) return 0;
         return joueurs.get(indexmax).numeroDeJoueur;
     }
 
