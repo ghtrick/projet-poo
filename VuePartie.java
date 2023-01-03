@@ -246,7 +246,7 @@ public class VuePartie extends AbstractPanel {
         }
         if (I == 0 || J == 0 || I == boutons.length - 1 || J == boutons[0].length - 1) return;
         ImageIcon image = p.plateau.createImage(p.main);
-        if (p instanceof PartieCarcassonne) {
+        if (p instanceof PartieCarcassonne && p.joueurs.get(p.joueurCourant) instanceof Joueur) {
             image = (ImageIcon) main.dominoCourantButton2.getIcon();
         }
         Image imageScaled = image.getImage().getScaledInstance(600 / 20 * zoomFactor, 600 / 20 * zoomFactor, Image.SCALE_SMOOTH);
