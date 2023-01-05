@@ -1,0 +1,84 @@
+* Rapport groupe 132 
+** Introduction
+*** Présentation du sujet du rapport
+Pour ce projet, l'objectif est de réaliser des prototypes de deux jeux "conceptuellement proches" pour chacun d'eux en réutilisant au maximum les éléments communs. 
+Le premier jeu, relativement simple, est une implémentation d'un jeu dérivant du jeu de dominos qui a pour particularité d'utiliser des dominos carrés et servira à mettre en place les bases de la modélisation. 
+Le second jeu, plus complexe, est une implémentation du jeu de société Carcassonne, qui permettra de mettre en avant les qualités de la conception réalisée et de montrer la réutilisabilité des éléments mis en place pour le premier jeu.
+*** Contexte et objectifs du cahier des charges
+**** Contexte. 
+L'utilisation des différents aspects de la programmation orientée objet sera prise en compte lors de l'évaluation, et il est important d'utiliser les notions vues en cours comme les classes abstraites, les interfaces ou encore les design pattern.
+**** Cahier des charges
+Le cahier des charges minimal prévoit l'implémentation des règles du jeu de dominos en intégralité, ainsi que la gestion partielle des règles du jeu de Carcassonne, jusqu'à la fin de la pose de la première tuile avec deux exceptions majeures : la non-vérification des contraintes de placement des pions et le non-comptage des points. 
+Le jeu de dominos devra également être jouable dans le terminal, tandis que les deux jeux pourront être joués en mode graphique grâce aux librairies AWT et Swing. 
+L'environnement de jeu devra permettre le paramétrage du jeu (choix du jeu, nombre de joueurs, humain ou IA pour chaque joueur) et l'accueil de l'utilisateur.
+Enfin, il est également possible d'ajouter d'autres fonctionnalités utiles de notre choix ou bien d'ajouter des extensions parmi celles proposées comme d'implémenter la totalité des règles de Carcassonne ou encore la possibilité de pouvoir sauvegarder une partie et de la charger lors du paramétrage du jeu.  
+** Partie 1 : Parties du cahier des charges traitées
+*** Description des différentes parties du cahier des charges qui ont été traitées, avec des exemples concrets de leur implémentation
+Dans un premier temps, nous avons commencé par implémenter les différentes classes et dossier que nous pensions indispensable pour la modélisation du jeu Domino. Ainsi nous avons notre code en format MVC avec différentes abstract.
+Suite a cela nous avions ainsi pu écrire le jeu des domino en version terminal.
+Avec cela comme base nous avons ensuite implémenter le menu des domino avec l'interface graphique, assez basique avec un boutons jouer et quitter mais sans encore les "IA" ou le nombres de joueurs.
+C'est ensuite que nous avons écrit une première version du jeu Domino sans "IA" et avec seulement 2 joueurs.
+Avec notre première version du jeu des Domino, nous avons commencé a réfléchir a l'implémentation de l'IA et du choix du nombre de joueurs tout en réfléchissant à comment implémenter le jue Carcassonne.
+Après avoir fini d'implémenter tout le jeu des Domino, nous avons ainsi dans un second temps écrit le jeu Carcassonne après avoir reussis a trouver une manière de l'implémenter.
+Avec tout cela, le cahier des charges minimal a été remplis mais nous avons quand même ajouté quelques fonctionnalités supplémentaires comme le fait de pouvoir zoomer et dézoomer sur le plateau et le fait de pouvoir glisser avec la souris afin de se déplacer sur le plateau.
+*** Éventuelles adaptations ou ajustements apportés au cahier des charges au cours de la réalisation
+Même avec le cahier des charges minimal remplis, il restait des points qui pouvait porter à faire des ajustements ou des adaptations.
+Ainsi dans le cahier des charges, la partie choix du nombre de joueurs, nous avons limité ce nombre à 5 comme dans les règles du Carcassonne pour les deux jeux.
+De plus, dans la partie où il fallait implémenter toutes les règles du jeu du Domino, ces règles n'était pas très clair dû au fait que le jeu du Domino n'est pas un vrai jeu en soit et ls règles que le sujet nous donnait n'était pas assez clair. 
+De ce fait, nous avons fait en sorte que les chiffres possiblement générés vont de 0 à 3 afin de faciliter le placement des dominos, de même pour la génération du sac qui n'était pas explicité nous avons donc généré un sac rempli de domino aléatoirement avec chaque combinaisons de 3 chiffres placé 8 fois toujours afin de faciliter le placement des dominos.
+** Partie 2 : Problèmes connus
+*** Description des problèmes rencontrés et de la façon dont ils ont été résolus
+**** Hiérarchie initiale
+Une mauvaise hiérarchie de projet peut avoir de graves conséquences sur la qualité et la maintenabilité du code.
+Nous avions négligé le fait de modéliser la hiérarchie au début du projet en se concentrant uniquement sur la partie algortihmique, ce qui nous a causé beaucoup de problèmes en commençant à implémenter Carcassonne car les fonctions relatives au bon fonctionnement du jeu n'étaient pas écrites comme nous l'espérions (code spaghetti).
+Nous avons donc décidé de complètement refaire la hiérarchie à partir de la.
+**** Placement des JButton
+Initialement nous avions décidé d'initialiser les JButton au fur et à mesure que les joueurs les posaient, mais avec le principe de fonctionnement du gridlayout, cela n'était pas possible car les il n'est pas possible de placer les dominos n'importe où.
+Nous avons donc trouvé un moyen efficace : générer directement tous les boutons au début de la partie et les rendre visibles lorsqu'ils sont posables ou posés.
+**** Implémentation du plateau en terminal
+Lors de l'implémentation du plateau de dominos en version texte, nous avions utilisé un simple tableau de tableaux de domino pour modéliser le plateau, mais cela a posé des problèmes au niveau de l'affichage sur plateau qui était trop grand, ou encore le calcul du placement des pions.
+Pour palier à ces deux problèmes, nous avons décidé d'utiliser une linkedlist de linkedlist au lieu d'un tableau de tableau pour faciliter la surcharge de l'affichage et du stockage des domino, et la possiblité de jouer avec un tableau de taille "infinie"
+
+**** Génération des domino du sac
+Ayant peu d'informations sur le contenu du sac dans la consigne du projet, nous avons décider de générer un nombre fini de dominos aléatoirement avec des chiffres compris entre 0 et 3 pour avoir le plus de possibilités de placement.
+le principe est le suivant : la fonction triNombres se charge de mettre tous les nombres à 3 chiffres composés de chiffres allant de 0 à 3 dans un tableau, et la fonction randomParmiLesNombresTries sélectionne environ 120 fois 4 nombres du tableau créé précedemment qui vont composer les 4 côtés d'un nouveau domino. Au final, ce sera environ 120 dominos qui composeront le sac.
+**** Problème de cast
+En travaillant un peu la généricité, on s'est rendu compte que gérer les cast dans les différentes fonctions avec carcassonne et domino était assez difficile.
+Nous avons dû séparer le traitement des pièces carcassonne et domino avec des instanceof et essayer au mieux de bien gérer les cast.
+
+*** Éventuels problèmes qui n'ont pas pu être résolus et les pistes envisagées pour y remédier
+**** Domino rectangles avec zoom
+Lorsque l'on dézoomait le plus possible, les dominos devenaient rectangles étant donné l'utilisation du gridlayout car la grid était carrée et devait s'adapter à un écran rectangulaire (car la fenêtre est tout le temps en plein écran), qui sont la norme aujourd'hui.
+En solution temporaire, nous avons donc limité le niveau de dezoom minimal afin que les dominos soient tout le temps carrés.
+Pour palier à ce problème efficacement, il faudrait utiliser un autre layout plus complexe que le gridlayout comme un gridbaglayout.
+**** l'interface graphique basique
+Pour avoir un jeu jouable, nous devions faire une interface graphique permettant d'intéragir avec le jeu. Hors, nous sommes nous deux de mauvais designer et ne pouvions trouver une bonne façon d'implémenter les éléments de manière esthétique et que le jeu rendent bien pour tout les différents pc.
+Ainsi, nous avons décidé de faire un jeu très minimal qui n'est pas du coup une solution en soit.
+
+**** Ne pas utiliser certains elements du cours
+Suivant le sujet, nous aurions du créer le jeu a l'aide des différentes choses que l'on a vu en cours comme les héritages, les interfaces, la généricité, les exceptions etc... Cependant, certains éléments vu en cours ne correspondait pas a notre vision de comment faire le jeu et nous ne trouvions pas de moyen de les implémenter. Par exemple, nous ne voyions pas comment implémenter les exceptions puisque notre jeu est censé toujours tourner hors les exceptions ne colle pas avec ça.
+
+** Partie 3 : Pistes d'extensions
+*** Présentation des idées d'extensions ou de fonctionnalités supplémentaires qui n'ont pas été implémentées dans le cadre du cahier des charges
+Lorsque l'on avait le jeu respecte le cahier des charges minimal, nous avions pensé a plusieurs piste d'extensions mais qui n'ont malheureusement pas pu être implémenté pour cause de manque de temps et de mauvaise gestion du temps probablement.
+Ainsi, une des premières choses que nous avions pensé à faire a été de créer plusieurs niveaux de bot. De base notre bot ne cherche que le premier domino plaçable avec une boucle for sans le tourner.
+C'est selon nous le niveau que devrait avoir le tout premier niveau du bot et ce que l'on a actuellement dans notre jeu.
+Le deuxième niveau, lui devrait être un bot qui cherche le premier domino plaçable mais cette fois en recherchant pour les 4 côtés possible du domino afin d'avoir plus de chance de placer le domino comparé au premier bot. Nous avons pensé a implémenter cela grace à une triple boucle for où l'on boucle la première façon de tourner le domino et on cherche une combinaison possible, puis on tourne le domino et on recherche et ce jusqu'à trouver un endroit où le poser ou jusqu'à faire les 4 tour.
+Cette manière d'implémenter n'est certe pas très efficace en terme de compléxité cependant, puisque nous n'avons le temps de l'implémenter, nous n'avons aussi pas eu le temps d'y réfléchir en profondeur.
+Le troisième niveau quant à lui aurait du être un bot qui fait la même chose que le deuxième niveau mais cette fois cherche toutes les manières de le poser possible mais calcule quel placement lui permet de remporter le maximum de points et le place a cet endroit.
+Malheureusement nous n'avons pas encore trouver de manière d'implémenter un bot pareil.
+
+Une autre idée que nous avions pensé à implémenter était le système de points dans le jeu Carcassonne respectant les règles de base.
+Une manière de l'implémenter aurait été que puisque nous avons des objets dans chaque tuile de carcassonne, nous pouvions mettre des boutons représentant ces différents points lors du placement des pions et ainsi calculer les poins en fonction de quel bouton le joueur a cliquer.
+
+** Partie 4 : Représentation graphique du modèle de classes
+*** Présentation manuscrite et scannée du modèle de classes utilisé dans le développement de la solution proposée
+** Conclusion :
+*** Synthèse des principaux points abordés dans le rapport
+En conclusion, le projet consistait en la réalisation de prototypes de deux jeux "conceptuellement proches" en réutilisant au maximum les éléments communs.
+Le premier jeu était une implémentation du jeu de dominos en utilisant des dominos carrés et servait de base pour la modélisation.
+Le second jeu était une implémentation du jeu de société Carcassonne, qui devait mettre en avant les qualités de la conception réalisée et la réutilisabilité des éléments mis en place pour le premier jeu.
+Selon le cahier des charges, il fallait implémenter les règles du jeu de dominos en intégralité et la gestion partielle des règles du jeu de Carcassonne jusqu'à la fin de la pose de la première tuile, avec certaines exceptions.
+Les jeux devaient être jouables en mode graphique et en terminal, et l'environnement de jeu devait permettre le paramétrage du jeu et l'accueil de l'utilisateur.
+Des extensions étaient également possibles, comme la totalité des règles de Carcassonne ou la possibilité de sauvegarder et charger une partie.
+Au final, toutes les parties du cahier des charges ont été traitées et les deux jeux ont été implémentés avec succès.
