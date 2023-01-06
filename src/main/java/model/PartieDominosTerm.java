@@ -33,7 +33,7 @@ public class PartieDominosTerm extends AbstractJeu {
                 String action = scan.nextLine();
                 res = Integer.parseInt(action);
             } catch (Exception e) {}
-        } while (res<=0);
+        } while (res<=1);
         int tmp = 0;
         boolean[] tab = new boolean[res];
         do {
