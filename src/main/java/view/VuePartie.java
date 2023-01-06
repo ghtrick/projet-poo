@@ -141,6 +141,7 @@ public class VuePartie extends AbstractPanel {
                     if (!isPlaced[I][J]) {
                         if (p.getPlateau().ajoutTuile(p.getMain(), I, J)) {
                             if(p.getMain() instanceof CarteCarcassonne) main.placerPion(I, J);
+                            clickBouton(I, J);
                         }
                     }
                 });
@@ -252,29 +253,27 @@ public class VuePartie extends AbstractPanel {
     }
 
     public void clickBouton(int I, int J) {
-        if (!isPlaced[I][J]) {
-            if (p.getPlateau().getPlateau().isEmpty()) {
-                partieFini(p.max());
-                return;
-            }
-            if (I == 0 || J == 0 || I == boutons.length - 1 || J == boutons[0].length - 1) return;
-            ImageIcon image = p.getPlateau().createImage(p.getMain());
-            if (p instanceof PartieCarcassonne && p.getJoueurs().get(p.getJoueurCourant()) instanceof Joueur) {
-                image = (ImageIcon) main.dominoCourantButton2.getIcon();
-            }
-            Image imageScaled = image.getImage().getScaledInstance(600 / 20 * zoomFactor, 600 / 20 * zoomFactor, Image.SCALE_SMOOTH);
-            ImageIcon imageIconScaled = new ImageIcon(imageScaled);
-            imageIconScaled.setImage(imageScaled);
-            boutons[I][J].setIcon(imageIconScaled);
-            boutons[I + 1][J].setVisible(true);
-            boutons[I][J + 1].setVisible(true);
-            boutons[I - 1][J].setVisible(true);
-            boutons[I][J - 1].setVisible(true);
-            isPlaced[I][J] = true;
-            main.skip();
-            LinkedList<AbstractTuile> l = new LinkedList<>();
-            l.add(p.getMain());
+        if (p.getPlateau().getPlateau().isEmpty()) {
+            partieFini(p.max());
+            return;
         }
+        if (I == 0 || J == 0 || I == boutons.length - 1 || J == boutons[0].length - 1) return;
+        ImageIcon image = p.getPlateau().createImage(p.getMain());
+        if (p instanceof PartieCarcassonne && p.getJoueurs().get(p.getJoueurCourant()) instanceof Joueur) {
+            image = (ImageIcon) main.dominoCourantButton2.getIcon();
+        }
+        Image imageScaled = image.getImage().getScaledInstance(600 / 20 * zoomFactor, 600 / 20 * zoomFactor, Image.SCALE_SMOOTH);
+        ImageIcon imageIconScaled = new ImageIcon(imageScaled);
+        imageIconScaled.setImage(imageScaled);
+        boutons[I][J].setIcon(imageIconScaled);
+        boutons[I + 1][J].setVisible(true);
+        boutons[I][J + 1].setVisible(true);
+        boutons[I - 1][J].setVisible(true);
+        boutons[I][J - 1].setVisible(true);
+        isPlaced[I][J] = true;
+        main.skip();
+        LinkedList<AbstractTuile> l = new LinkedList<>();
+        l.add(p.getMain());
     }
 
     public void partieFini(int Gagnant) {
