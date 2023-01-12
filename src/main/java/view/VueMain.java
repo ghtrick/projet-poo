@@ -12,6 +12,7 @@ import src.main.java.model.*;
 import src.main.java.abstractClass.*;
 public class VueMain extends JFrame{
 
+    JFrame jf;
     AbstractJeu jeu;
     VuePartie p;
     JButton dominoCourantButton;
@@ -23,8 +24,9 @@ public class VueMain extends JFrame{
     int i;
     int j;
     
-    public VueMain(AbstractJeu jeu, VuePartie p) {
+    public VueMain(AbstractJeu jeu, VuePartie p, JFrame jf) {
 
+        this.jf=jf;
         this.jeu=jeu;
         this.p=p;
        
@@ -67,16 +69,16 @@ public class VueMain extends JFrame{
         dominoCourantButton2.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                // Récupération des coordonnées du clic
-                int x = e.getX();
-                int y = e.getY();
-                ImageIcon newImg = Util.placerPion((ImageIcon) dominoCourantButton2.getIcon(), jeu.getJoueurs().get(jeu.getJoueurCourant()).getNumeroDeJoueur(), x, y);
-                dominoCourantButton2.setIcon(newImg);
-                turnLeft.setVisible(true);
-                turnRight.setVisible(true);
-                p.clickBouton(i, j);
-                dominoCourantButton2.setVisible(false);
-                dominoCourantButton.setVisible(true);
+            // Récupération des coordonnées du clic
+            int x = e.getX();
+            int y = e.getY();
+            ImageIcon newImg = Util.placerPion((ImageIcon) dominoCourantButton2.getIcon(), jeu.getJoueurs().get(jeu.getJoueurCourant()).getNumeroDeJoueur(), x, y);
+            dominoCourantButton2.setIcon(newImg);
+            turnLeft.setVisible(true);
+            turnRight.setVisible(true);
+            p.clickBouton(i, j);
+            dominoCourantButton2.setVisible(false);
+            dominoCourantButton.setVisible(true);
             }
         });
     }
@@ -186,11 +188,12 @@ public class VueMain extends JFrame{
 
     public void skip() {
         if (p.p.getJoueurs().size()==1 || p.p.getSac().getTuilesDansLeSac().isEmpty()) {
-            System.out.println("hgdfnhgjdfgdserqfbhjkudn,jxbcfvdfhgju");
-            p.partieFini(p.p.max());
+            setVisible(false);
+            p.setVisible(false);
+            VueFin fin = new VueFin(jf, this);
+            fin.partieFini(p.p.max());
             return;
         }
-        System.out.println("qqsdqhdksqd");
         jeu.piocher();
 
         if (jeu.getJoueurCourant()==jeu.getNbJoueurs()-1) {

@@ -13,7 +13,7 @@ import src.main.java.abstractClass.*;
 
 public class Util {
 
-    public static String affichePlateau(PlateauCarcassonne p) {
+    public static String affichePlateau(PlateauDominosTerm p) {
         String res = "";
         for (int i = 0; i < p.getPlateau().size(); i++) {
             res+=afficheDominoListe(p.getPlateau().get(i));

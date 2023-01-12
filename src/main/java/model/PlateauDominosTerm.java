@@ -22,29 +22,70 @@ public class PlateauDominosTerm extends AbstractPlateau{
         LinkedList<Boolean> bool = new LinkedList<>();
         boolean numeroCorrect = true;
         try {
-            bool.add(Arrays.equals(plateau.get(y).get(x+1).getNumeros()[3], t.getNumeros()[1]));
-            for (AbstractElement x1 :  t.getNumeros()[1]) {
-                res+=(int) x1.getVal();
+            int[] cotereel = new int[3];
+            cotereel[0] = (int) plateau.get(y+1).get(x).getNumeros()[3][0].getVal();
+            cotereel[1] = (int) plateau.get(y+1).get(x).getNumeros()[3][1].getVal();
+            cotereel[2] = (int) plateau.get(y+1).get(x).getNumeros()[3][2].getVal();
+            int[] coteTest = new int[3];
+            coteTest[0] = (int) t.getNumeros()[1][0].getVal();
+            coteTest[1] = (int) t.getNumeros()[1][1].getVal();
+            coteTest[2] = (int) t.getNumeros()[1][2].getVal();
+            System.out.println(Arrays.toString(cotereel));
+            System.out.println(Arrays.toString(coteTest));
+            bool.add(Arrays.equals(cotereel, coteTest));
+            for (int x1 :  coteTest) {
+                res+=x1;
             }
         } catch (Exception e) {}
         try {
-            bool.add(Arrays.equals(plateau.get(y+1).get(x).getNumeros()[0], t.getNumeros()[2]));
-            for (AbstractElement x1 :  t.getNumeros()[2]) {
-                res+=(int) x1.getVal();
+            int[] cotereel = new int[3];
+            cotereel[0] = (int) plateau.get(y).get(x-1).getNumeros()[0][0].getVal();
+            cotereel[1] = (int) plateau.get(y).get(x-1).getNumeros()[0][1].getVal();
+            cotereel[2] = (int) plateau.get(y).get(x-1).getNumeros()[0][2].getVal();
+            int[] coteTest = new int[3];
+            coteTest[0] = (int) t.getNumeros()[2][0].getVal();
+            coteTest[1] = (int) t.getNumeros()[2][1].getVal();
+            coteTest[2] = (int) t.getNumeros()[2][2].getVal();
+            System.out.println(Arrays.toString(cotereel));
+            System.out.println(Arrays.toString(coteTest));
+            bool.add(Arrays.equals(cotereel, coteTest));
+            for (int x1 :  coteTest) {
+                res+=x1;
             }
         } catch (Exception e) {}
         try {
-            bool.add(Arrays.equals(plateau.get(y).get(x-1).getNumeros()[1], t.getNumeros()[3]));
-            for (AbstractElement x1 :  t.getNumeros()[3]) {
-                res+=(int) x1.getVal();
+            int[] cotereel = new int[3];
+            cotereel[0] = (int) plateau.get(y-1).get(x).getNumeros()[1][0].getVal();
+            cotereel[1] = (int) plateau.get(y-1).get(x).getNumeros()[1][1].getVal();
+            cotereel[2] = (int) plateau.get(y-1).get(x).getNumeros()[1][2].getVal();
+            int[] coteTest = new int[3];
+            coteTest[0] = (int) t.getNumeros()[3][0].getVal();
+            coteTest[1] = (int) t.getNumeros()[3][1].getVal();
+            coteTest[2] = (int) t.getNumeros()[3][2].getVal();
+            System.out.println(Arrays.toString(cotereel));
+            System.out.println(Arrays.toString(coteTest));
+            bool.add(Arrays.equals(cotereel, coteTest));
+            for (int x1 :  coteTest) {
+                res+=x1;
             }
         } catch (Exception e) {}
         try {
-            bool.add(Arrays.equals(plateau.get(y-1).get(x).getNumeros()[2], t.getNumeros()[0]));
-            for (AbstractElement x1 :  t.getNumeros()[0]) {
-                res+=(int) x1.getVal();
+            int[] cotereel = new int[3];
+            cotereel[0] = (int) plateau.get(y).get(x+1).getNumeros()[2][0].getVal();
+            cotereel[1] = (int) plateau.get(y).get(x+1).getNumeros()[2][1].getVal();
+            cotereel[2] = (int) plateau.get(y).get(x+1).getNumeros()[2][2].getVal();
+            int[] coteTest = new int[3];
+            coteTest[0] = (int) t.getNumeros()[0][0].getVal();
+            coteTest[1] = (int) t.getNumeros()[0][1].getVal();
+            coteTest[2] = (int) t.getNumeros()[0][2].getVal();
+            System.out.println(Arrays.toString(cotereel));
+            System.out.println(Arrays.toString(coteTest));
+            bool.add(Arrays.equals(cotereel, coteTest));
+            for (int x1 :  coteTest) {
+                res+=x1;
             }
         } catch (Exception e) {}
+
         for(int i=0; i<bool.size(); i++) {
             if(!bool.get(i)) {
                 numeroCorrect = false;
@@ -54,36 +95,34 @@ public class PlateauDominosTerm extends AbstractPlateau{
             numeroCorrect = false;
         }
         if(numeroCorrect) {
-            if(x==-1 || x==plateau.get(0).size()) {
-                if(x==-1) x=0;
-                for(int i=0; i<plateau.size(); i++) {
-                    if(i!=y) plateau.get(i).add(x, new Domino());
-                    else plateau.get(i).add(x, t);
-                }
-            } else if (y==-1 || y==plateau.size()) {
-                if (y==-1) {
-                    y=0;
-                    plateau.add(y, new LinkedList<AbstractTuile>());
-                    for(int i=0; i<plateau.get(y+1).size(); i++) {
-                        if(i!=x) plateau.get(y).add(i, new Domino());
-                        else {
-                            plateau.get(y).add(i, t);
-                        }
-                    }
-                } else {
-                    plateau.add(y, new LinkedList<AbstractTuile>());
-                    for(int i=0; i<plateau.get(y-1).size(); i++) {
-                        if(i!=x) plateau.get(y).add(i, new Domino());
-                        else {
-                            plateau.get(y).add(i, t);
-                        }
-                    }
-                }
-            } else {
-                if(plateau.get(y).get(x).isEstVide()) {
-                    plateau.get(y).set(x, t);
+            if (y==-1) {
+                System.out.println("1");
+                for (int i = 0; i < plateau.size(); i++) {
+                    if (x==i) plateau.get(i).addFirst(t);
+                    else plateau.get(i).addFirst(new Domino());
                 }
             }
+            else if (x==-1) {
+                System.out.println("4");
+                plateau.add(new LinkedList<AbstractTuile>());
+                for (int i = 0; i < y; i++) {
+                    plateau.get(plateau.size()-1).addFirst(new Domino());
+                }
+                plateau.get(plateau.size()-1).add(t);
+            }
+            else if (y==plateau.size()) {
+                System.out.println("3");
+                plateau.get(x).add(t);
+            }
+            else if (x==plateau.get(y).size()) {
+                System.out.println("2");
+                plateau.addFirst(new LinkedList<AbstractTuile>());
+                for (int i = 0; i < y; i++) {
+                    plateau.get(0).add(new Domino());
+                }
+                plateau.get(0).add(t);
+            }
+            else plateau.get(y).set(x, t);
             System.out.println("joueurcourant: "+jeu.getJoueurCourant());
             int res3 = res+jeu.getJoueurs().get(jeu.getJoueurCourant()).getPoint();
             jeu.getJoueurs().get(jeu.getJoueurCourant()).setPoint(res3);

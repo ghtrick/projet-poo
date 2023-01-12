@@ -33,34 +33,14 @@ public class PartieDominosTerm extends AbstractJeu {
                 String action = scan.nextLine();
                 res = Integer.parseInt(action);
             } catch (Exception e) {}
-        } while (res<=1);
-        int tmp = 0;
-        boolean[] tab = new boolean[res];
-        do {
-            System.out.println("Joueur " + (tmp+1) + " est-t-il il bot ? (oui ou non)");
-            String joueurBot = scan.nextLine();
-            if(joueurBot.equals("oui")) {
-                tab[tmp] = true;
-                tmp++;
-            } else if(joueurBot.equals("non")) {
-                tab[tmp] = false;
-                tmp++;
-            } else {
-                System.out.println("Mauvaise réponse répondez par oui ou par non");
-            }
-        } while(tmp<res);
-        initJoueurs(res, tab);
+        } while (res<=0);
+        initJoueurs(res);
     }
 
-    public void initJoueurs(int x, boolean[] bots) {
+    public void initJoueurs(int x) {
         joueurs = new LinkedList<>();
         for (int i = 0; i < x; i++) {
-            if (bots[i]) {
-                Bot b = new Bot(0,i + 1);
-                joueurs.add(b);
-            } else {
-                joueurs.add(new Joueur(0,i + 1));
-            }
+            joueurs.add(new Joueur(0,i + 1));
         }
     }
 
@@ -70,7 +50,7 @@ public class PartieDominosTerm extends AbstractJeu {
         boolean finirPartie = false;
         int joueurCourant = 0;
         do {
-            //System.out.println(Util.affichePlateau((PlateauDominosTerm) plateau));
+            System.out.println(Util.affichePlateau((PlateauDominosTerm) plateau));
             System.out.println("---------------------------------------------------------------");
             piocher();
             LinkedList<AbstractTuile> maintmp = new LinkedList<>();
@@ -149,7 +129,6 @@ public class PartieDominosTerm extends AbstractJeu {
                                 aJoue=true;
                             }
                         } catch (Exception e) {System.out.println("erreur domino mal sélectionné");}
-                        System.out.println(aJoue + " aa");
                     } while (!aJoue);
 
                     if (joueurCourant+1==joueurs.size()) joueurCourant=0;

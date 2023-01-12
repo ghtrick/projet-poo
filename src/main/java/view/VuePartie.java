@@ -5,6 +5,7 @@ import src.main.java.abstractClass.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
@@ -28,7 +29,6 @@ public class VuePartie extends AbstractPanel {
     protected JButton zoomOut;
     protected JButton quitter;
     protected Point initialPosition;
-
     protected JButton abandonner;
 
     public VuePartie(JFrame j, boolean modeDeJeu, int nbJoueurs, int nbBot) {
@@ -82,7 +82,8 @@ public class VuePartie extends AbstractPanel {
         add(topPanel,BorderLayout.NORTH);
         add(scrollPanel,BorderLayout.SOUTH);
 
-        main = new VueMain(p, this);
+        main = new VueMain(p, this, j);
+        zoomIn();
     }
 
     public void setTopPanel() {
@@ -107,6 +108,8 @@ public class VuePartie extends AbstractPanel {
         scrollPanel.setViewportView(plateauPanel);
         scrollPanel.setPreferredSize(new Dimension(j.getWidth(), j.getHeight()*4/5));
         scrollPanel.setWheelScrollingEnabled(true);
+        scrollPanel.getVerticalScrollBar().setUnitIncrement(50);
+        scrollPanel.getHorizontalScrollBar().setUnitIncrement(50);
     }
 
     public void setReste() {
@@ -141,7 +144,7 @@ public class VuePartie extends AbstractPanel {
                     if (!isPlaced[I][J]) {
                         if (p.getPlateau().ajoutTuile(p.getMain(), I, J)) {
                             if(p.getMain() instanceof CarteCarcassonne) main.placerPion(I, J);
-                            clickBouton(I, J);
+                            else clickBouton(I,J);
                         }
                     }
                 });
@@ -195,7 +198,7 @@ public class VuePartie extends AbstractPanel {
     }
 
     public void zoomOut() {
-        if (zoomFactor > 2) {
+        if (zoomFactor > 4) {
             zoomFactor--;
             plateauPanel.setPreferredSize(new Dimension(600 * zoomFactor, 600 * zoomFactor));
             for(int i=0; i<boutons.length;i++) {
@@ -253,54 +256,33 @@ public class VuePartie extends AbstractPanel {
     }
 
     public void clickBouton(int I, int J) {
-        if (p.getPlateau().getPlateau().isEmpty()) {
-            partieFini(p.max());
-            return;
+        if (!isPlaced[I][J]) {
+            if (p.getPlateau().getPlateau().isEmpty()) {
+                VueFin fin = new VueFin(j, main);
+                setVisible(false);
+                fin.partieFini(p.max());
+                return;
+            }
+            if (I == 0 || J == 0 || I == boutons.length - 1 || J == boutons[0].length - 1) return;
+            ImageIcon image = p.getPlateau().createImage(p.getMain());
+            System.out.println("test");
+            System.out.println(image.toString());
+            if (p instanceof PartieCarcassonne && p.getJoueurs().get(p.getJoueurCourant()) instanceof Joueur) {
+                image = (ImageIcon) main.dominoCourantButton2.getIcon();
+            }
+            Image imageScaled = image.getImage().getScaledInstance(600 / 20 * zoomFactor, 600 / 20 * zoomFactor, Image.SCALE_SMOOTH);
+            ImageIcon imageIconScaled = new ImageIcon(imageScaled);
+            imageIconScaled.setImage(imageScaled);
+            boutons[I][J].setIcon(imageIconScaled);
+            boutons[I + 1][J].setVisible(true);
+            boutons[I][J + 1].setVisible(true);
+            boutons[I - 1][J].setVisible(true);
+            boutons[I][J - 1].setVisible(true);
+            isPlaced[I][J] = true;
+            main.skip();
+            LinkedList<AbstractTuile> l = new LinkedList<>();
+            l.add(p.getMain());
         }
-        if (I == 0 || J == 0 || I == boutons.length - 1 || J == boutons[0].length - 1) return;
-        ImageIcon image = p.getPlateau().createImage(p.getMain());
-        if (p instanceof PartieCarcassonne && p.getJoueurs().get(p.getJoueurCourant()) instanceof Joueur) {
-            image = (ImageIcon) main.dominoCourantButton2.getIcon();
-        }
-        Image imageScaled = image.getImage().getScaledInstance(600 / 20 * zoomFactor, 600 / 20 * zoomFactor, Image.SCALE_SMOOTH);
-        ImageIcon imageIconScaled = new ImageIcon(imageScaled);
-        imageIconScaled.setImage(imageScaled);
-        boutons[I][J].setIcon(imageIconScaled);
-        boutons[I + 1][J].setVisible(true);
-        boutons[I][J + 1].setVisible(true);
-        boutons[I - 1][J].setVisible(true);
-        boutons[I][J - 1].setVisible(true);
-        isPlaced[I][J] = true;
-        main.skip();
-        LinkedList<AbstractTuile> l = new LinkedList<>();
-        l.add(p.getMain());
-    }
-
-    public void partieFini(int Gagnant) {
-        JButton menu = new JButton("Menu");
-        setVisible(false);
-        JPanel fin = new JPanel();
-        fin.setPreferredSize(new Dimension(j.getWidth(),j.getHeight()));
-        fin.setLayout(null);
-        JLabel finT = new JLabel();
-        finT.setBounds(j.getWidth()/2-200, j.getHeight()/2-250, 500, 500);
-        if(Gagnant!=0) {
-            finT.setText("Joueur" + Gagnant + " à gagné");
-            finT.setFont(new Font("Arial", 0 , 50));
-            fin.add(finT,BorderLayout.CENTER);
-        } else {
-            finT.setText("Égalité");
-            finT.setFont(new Font("Arial", 0 , 50));
-            finT.setBounds(j.getWidth()/2-100, j.getHeight()/2-250, 500, 500);
-            fin.add(finT,BorderLayout.CENTER);
-        }
-        main.dispose();
-        menu.setBounds(j.getWidth()/2-100, j.getHeight()/2+150, 100, 50);
-        menu.addActionListener(e-> {
-            VueGenerale g = new VueGenerale();
-        });
-        fin.add(menu, BorderLayout.SOUTH);
-        j.setContentPane(fin);
     }
 
     public VueMain getMain() {
@@ -310,15 +292,9 @@ public class VuePartie extends AbstractPanel {
     public AbstractJeu getP() {
         return p;
     }
-
     public boolean[][] getIsPlaced() {
         return isPlaced;
     }
-
-    public int getZoomFactor() {
-        return zoomFactor;
-    }
-
     public JButton[][] getBoutons() {
         return boutons;
     }

@@ -38,8 +38,6 @@ public class PlateauCarcassonne extends AbstractPlateau{
             coteTest[0] = (int) t.getNumeros()[1][0].getVal();
             coteTest[1] = (int) t.getNumeros()[1][1].getVal();
             coteTest[2] = (int) t.getNumeros()[1][2].getVal();
-            System.out.println(Arrays.toString(cotereel));
-            System.out.println(Arrays.toString(coteTest));
 
             bool.add(Arrays.equals(cotereel, coteTest));
             for (int x1 :  coteTest) {
@@ -55,8 +53,6 @@ public class PlateauCarcassonne extends AbstractPlateau{
             coteTest[0] = (int) t.getNumeros()[2][0].getVal();
             coteTest[1] = (int) t.getNumeros()[2][1].getVal();
             coteTest[2] = (int) t.getNumeros()[2][2].getVal();
-            System.out.println(Arrays.toString(cotereel));
-            System.out.println(Arrays.toString(coteTest));
             bool.add(Arrays.equals(cotereel, coteTest));
             for (int x1 :  coteTest) {
                 res+=x1;
@@ -71,8 +67,6 @@ public class PlateauCarcassonne extends AbstractPlateau{
             coteTest[0] = (int) t.getNumeros()[3][0].getVal();
             coteTest[1] = (int) t.getNumeros()[3][1].getVal();
             coteTest[2] = (int) t.getNumeros()[3][2].getVal();
-            System.out.println(Arrays.toString(cotereel));
-            System.out.println(Arrays.toString(coteTest));
             bool.add(Arrays.equals(cotereel, coteTest));
             for (int x1 :  coteTest) {
                 res+=x1;
@@ -87,8 +81,6 @@ public class PlateauCarcassonne extends AbstractPlateau{
             coteTest[0] = (int) t.getNumeros()[0][0].getVal();
             coteTest[1] = (int) t.getNumeros()[0][1].getVal();
             coteTest[2] = (int) t.getNumeros()[0][2].getVal();
-            System.out.println(Arrays.toString(cotereel));
-            System.out.println(Arrays.toString(coteTest));
             bool.add(Arrays.equals(cotereel, coteTest));
             for (int x1 :  coteTest) {
                 res+=x1;
